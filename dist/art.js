@@ -5,7 +5,7 @@
  const data=await response.json();let emotion=0;
  const option=(value,text)=>{const e=document.createElement('option');e.value=value;e.textContent=text;return e};
  const position=i=>`${(i%3)*50}% ${Math.floor(i/3)*50}%`;
- const sprite=(el,file,cell)=>{el.style.backgroundImage=`url("${file}")`;el.style.backgroundPosition=position(cell)};
+ const sprite=(el,file,cell)=>{el.style.backgroundImage=`url("${file}")`;el.style.backgroundPosition=cell==null?'center':position(cell);el.style.backgroundSize=cell==null?'cover':'300% 300%'};
  const character=()=>data.characters.find(c=>c.id===$('character').value);
  const variant=()=>character().variants.find(v=>v.id===$('costume').value);
  const costumeLabels={travel:'Дорожное пальто',coat:'Пальто',cardigan:'Кардиган',scarf:'Клетчатый шарф',linen:'Повседневный',blouse:'Блузка',shirt:'Рубашка',suit:'Костюм',blazer:'Жакет',flight:'Рабочий комбинезон',uniform:'Форма',headset:'Гарнитура',evening:'Вечернее платье',eva:'Скафандр',future:'Запись из будущего'};
