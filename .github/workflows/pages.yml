@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+      - name: Build versioned browser assets
+        run: python3 scripts/build.py
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website
