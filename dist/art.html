@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Между строк · Ателье персонажей</title><link rel="stylesheet" href="art.css"></head>
+<body><header><a href="index.html"> К историям</a><span>МЕЖДУ СТРОК / АТЕЛЬЕ</span></header>
+<main><p class="eyebrow">ЛИЦА И МЕСТА ИСТОРИЙ</p><h1>У каждого чувства<br>есть <em>лицо.</em></h1><p class="intro">Портреты, эмоции и пространства первых трёх серий. Выберите героя и выражение, чтобы рассмотреть образ.</p>
+<div class="controls"><label>История<select id="story"></select></label><label>Персонаж<select id="character"></select></label><label>Образ<select id="costume"></select></label></div>
+<section class="workbench"><div class="stage" id="stage"><div class="backdrop" id="backdrop"></div><div class="shade"></div><div id="portrait" class="portrait" role="img"></div><div class="caption"><span id="emotion-name"></span><h2 id="character-name"></h2><p id="character-role"></p></div></div><aside><h2>Палитра эмоций</h2><div id="emotions"></div><label>Фон<select id="background"></select></label><p class="hint">Портреты на прозрачном фоне. Их можно накладывать на разные локации; внешность героя сохраняется при смене эмоции.</p><a id="sheet-link" target="_blank" rel="noopener">Открыть весь лист эмоций </a><p id="status" role="status"></p></aside></section>
+<section><h2>Места действия</h2><div id="locations" class="locations"></div></section>
+<section><h2>Карта сцен</h2><p class="hint">Здесь показаны участники и подходящие выражения. Звонки, записи и воспоминания не означают присутствие героя в комнате.</p><ol id="scenes"></ol></section></main>
+<footer>Художественный каталог · Первые серии · <a href="assets/art-manifest.json">Описание ресурсов</a></footer><script src="art.js"></script></body></html>

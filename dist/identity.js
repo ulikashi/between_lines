@@ -1,0 +1,14 @@
+// The Italian episode is contemporary: its protagonists are Russian visitors.
+const protagonistDefaults=['Лера','Вера','Лера'];
+const protagonistIds=['city-lera','summer-heroine','moon-lera'];
+state.names=state.names&&typeof state.names==='object'&&!Array.isArray(state.names)?state.names:{};
+function protagonistName(id=active){return state.names[id]||protagonistDefaults[id]}
+function characterName(character){return character.id===protagonistIds[active]?protagonistName():character.id==='city-father'?'Отец':character.name}
+function personalizedText(text){if(protagonistName()===protagonistDefaults[active])return text;return text.replace(/(?<!\p{L})(Лера|Лерка|Леру)(?!\p{L})/gu,word=>{const name=protagonistName();if(word==='Леру'){if(name.endsWith('а'))return name.slice(0,-1)+'у';if(name.endsWith('я'))return name.slice(0,-1)+'ю'}return name})}
+const naming=document.createElement('dialog');naming.id='name-dialog';naming.setAttribute('aria-labelledby','name-title');
+naming.innerHTML=`<form id="name-form"><button type="button" class="name-close" aria-label="Закрыть">Закрыть</button><p class="eyebrow">ВАША ИСТОРИЯ</p><h2 id="name-title">Как вас зовут?</h2><p id="name-context"></p><label for="hero-name">Имя героини</label><input id="hero-name" name="hero-name" maxlength="32" autocomplete="given-name" placeholder="Ваше имя"><p class="name-hint" id="name-hint"></p><button class="name-start" type="submit">Начать историю</button><button class="name-skip" type="button">Оставить имя по умолчанию</button></form>`;
+document.body.append(naming);let pendingStory=null;
+const originalPlay=play;
+play=function(id){if(!state.names[id]){if(state.runs[id]?.step>0||state.runs[id]?.beat>0){state.names[id]=protagonistDefaults[id];save();originalPlay(id);return}pendingStory=id;$('#hero-name').value='';$('#name-context').textContent=['Современный Северск. Возвращение в родной город.','Современная Италия. Героиня — редактор из Москвы, приехавшая к морю.','Будущее. Героиня — специалист орбитальной станции «Луна-9».'][id];$('#name-hint').textContent=`Можно пропустить — героиню будут звать ${protagonistDefaults[id]}.`;naming.showModal();return}originalPlay(id)};
+function beginNamedStory(useDefault){if(pendingStory===null)return;const input=$('#hero-name');const value=input.value.normalize('NFC').trim().replace(/\s+/g,' ');if(!useDefault&&value&&!/^[\p{L}\p{M}]+(?:[ '\u2019-][\p{L}\p{M}]+)*$/u.test(value)){input.setCustomValidity('Используйте буквы, пробел, дефис или апостроф.');input.reportValidity();return}const id=pendingStory;state.names[id]=useDefault||!value?protagonistDefaults[id]:value;save();naming.close();originalPlay(id)}
+$('#name-form').onsubmit=e=>{e.preventDefault();beginNamedStory(false)};$('.name-skip').onclick=()=>beginNamedStory(true);$('.name-close').onclick=()=>naming.close();$('#hero-name').oninput=e=>e.target.setCustomValidity('');naming.addEventListener('close',()=>{pendingStory=null});

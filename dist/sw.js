@@ -1,5 +1,5 @@
-const CACHE='between-lines-episodes-2';
-const FILES=['./','./index.html','./style.css','./salon.css','./app.js','./episodes.js','./assets/city.png','./assets/moon.png','./assets/summer.png','./assets/salon.png'];
+const CACHE='between-lines-reader-4';
+const FILES=['./','./index.html','./style.css','./salon.css','./app.js','./episodes.js','./reader.css','./reader.js','./identity.js','./dialogue-data.js','./visual-assets.js','./assets/city.png','./assets/moon.png','./assets/summer.png','./assets/salon.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('between-lines-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;event.respondWith(fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy))}return response}).catch(()=>caches.match(event.request)))});

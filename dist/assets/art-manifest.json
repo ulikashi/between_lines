@@ -1,0 +1,1143 @@
+{
+  "version": 1,
+  "scope": "Первые опубликованные серии: 3 × 13 сцен. Не утверждает содержание будущих серий.",
+  "grid": {
+    "columns": 3,
+    "rows": 3,
+    "order": "row-major",
+    "cellIndexBase": 0
+  },
+  "emotions": [
+    {
+      "id": "neutral",
+      "label": "Спокойствие",
+      "cell": 0
+    },
+    {
+      "id": "smile",
+      "label": "Радость / улыбка",
+      "cell": 1
+    },
+    {
+      "id": "tender",
+      "label": "Нежность / сочувствие",
+      "cell": 2
+    },
+    {
+      "id": "suspicious",
+      "label": "Недоверие",
+      "cell": 3
+    },
+    {
+      "id": "angry",
+      "label": "Гнев",
+      "cell": 4
+    },
+    {
+      "id": "surprised",
+      "label": "Удивление",
+      "cell": 5
+    },
+    {
+      "id": "afraid",
+      "label": "Страх / тревога",
+      "cell": 6
+    },
+    {
+      "id": "sad",
+      "label": "Грусть / боль",
+      "cell": 7
+    },
+    {
+      "id": "determined",
+      "label": "Решимость",
+      "cell": 8
+    }
+  ],
+  "stories": [
+    "Пока город спит",
+    "Не случайные",
+    "Тёмная сторона Луны"
+  ],
+  "characters": [
+    {
+      "id": "city-lera",
+      "name": "Лера",
+      "story": 0,
+      "role": "Главная героиня",
+      "variants": [
+        {
+          "id": "travel",
+          "file": "assets/characters/city-lera.png",
+          "width": 1259,
+          "height": 1249
+        }
+      ]
+    },
+    {
+      "id": "city-mark",
+      "name": "Марк",
+      "story": 0,
+      "role": "Попутчик и союзник",
+      "variants": [
+        {
+          "id": "coat",
+          "file": "assets/characters/city-mark.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "city-nina",
+      "name": "Нина",
+      "story": 0,
+      "role": "Сестра; запись, телефон и двойник в окне",
+      "variants": [
+        {
+          "id": "cardigan",
+          "file": "assets/characters/city-nina.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "city-father",
+      "name": "Отец Леры и Нины",
+      "story": 0,
+      "role": "Фотография и аудиозапись",
+      "variants": [
+        {
+          "id": "scarf",
+          "file": "assets/characters/city-father.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-heroine",
+      "name": "Героиня",
+      "story": 1,
+      "role": "Редактор и автор романа; имя не названо",
+      "variants": [
+        {
+          "id": "linen",
+          "file": "assets/characters/summer-heroine.png",
+          "width": 1254,
+          "height": 1254
+        },
+        {
+          "id": "evening",
+          "file": "assets/characters/summer-heroine-evening.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-sasha",
+      "name": "Саша",
+      "story": 1,
+      "role": "Фотограф",
+      "variants": [
+        {
+          "id": "linen",
+          "file": "assets/characters/summer-sasha.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-bianchi",
+      "name": "Синьора Бьянки",
+      "story": 1,
+      "role": "Хозяйка квартиры; телефон",
+      "variants": [
+        {
+          "id": "blouse",
+          "file": "assets/characters/summer-bianchi.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-friend",
+      "name": "Подруга",
+      "story": 1,
+      "role": "Имя не названо; письмо и видеосвязь",
+      "variants": [
+        {
+          "id": "shirt",
+          "file": "assets/characters/summer-friend.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-kirill",
+      "name": "Кирилл Ветров",
+      "story": 1,
+      "role": "Режиссёр, бывший партнёр героини",
+      "variants": [
+        {
+          "id": "suit",
+          "file": "assets/characters/summer-kirill.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "summer-producer",
+      "name": "Продюсер",
+      "story": 1,
+      "role": "Имя не названо; встреча на премьере",
+      "variants": [
+        {
+          "id": "blazer",
+          "file": "assets/characters/summer-producer.png",
+          "width": 1261,
+          "height": 1247
+        }
+      ]
+    },
+    {
+      "id": "moon-lera",
+      "name": "Лера",
+      "story": 2,
+      "role": "Специалист по внешним системам; отдельная героиня",
+      "variants": [
+        {
+          "id": "flight",
+          "file": "assets/characters/moon-lera.png",
+          "width": 1260,
+          "height": 1248
+        },
+        {
+          "id": "eva",
+          "file": "assets/characters/moon-lera-eva.png",
+          "width": 1254,
+          "height": 1254
+        },
+        {
+          "id": "future",
+          "file": "assets/characters/moon-lera-future.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "moon-ren",
+      "name": "Рен",
+      "story": 2,
+      "role": "Инженер; также голос на записи",
+      "variants": [
+        {
+          "id": "flight",
+          "file": "assets/characters/moon-ren.png",
+          "width": 1254,
+          "height": 1254
+        },
+        {
+          "id": "future",
+          "file": "assets/characters/moon-ren-future.png",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "id": "moon-voronova",
+      "name": "Капитан Воронова",
+      "story": 2,
+      "role": "Командир станции",
+      "variants": [
+        {
+          "id": "uniform",
+          "file": "assets/characters/moon-voronova.png",
+          "width": 1263,
+          "height": 1245
+        }
+      ]
+    },
+    {
+      "id": "moon-dispatcher",
+      "name": "Диспетчер Земли",
+      "story": 2,
+      "role": "Радиосвязь; пол и внешность — художественное решение",
+      "variants": [
+        {
+          "id": "headset",
+          "file": "assets/characters/moon-dispatcher.png",
+          "width": 1216,
+          "height": 1293
+        }
+      ]
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "city-01",
+      "story": 0,
+      "name": "Ночной перрон",
+      "file": "assets/backgrounds/city.png",
+      "cell": 0,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-02",
+      "story": 0,
+      "name": "Выход с вокзала и остановившиеся часы",
+      "file": "assets/backgrounds/city.png",
+      "cell": 1,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-03",
+      "story": 0,
+      "name": "Машина у дома Сомовых",
+      "file": "assets/backgrounds/city.png",
+      "cell": 2,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-04",
+      "story": 0,
+      "name": "Кухня Нины с солью на подоконнике",
+      "file": "assets/backgrounds/city.png",
+      "cell": 3,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-05",
+      "story": 0,
+      "name": "Ноутбук и семейный архив",
+      "file": "assets/backgrounds/city.png",
+      "cell": 4,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-06",
+      "story": 0,
+      "name": "Прихожая квартиры Нины",
+      "file": "assets/backgrounds/city.png",
+      "cell": 5,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-07",
+      "story": 0,
+      "name": "Улица у пекарни и бетонные блоки",
+      "file": "assets/backgrounds/city.png",
+      "cell": 6,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-08",
+      "story": 0,
+      "name": "Старый мост: маяк погашен",
+      "file": "assets/backgrounds/city.png",
+      "cell": 7,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "city-09",
+      "story": 0,
+      "name": "Старый мост: окно маяка горит",
+      "file": "assets/backgrounds/city.png",
+      "cell": 8,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-01",
+      "story": 1,
+      "name": "Прихожая приморской квартиры",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 0,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-02",
+      "story": 1,
+      "name": "Кухня с фотографиями и чеком на холодильнике",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 1,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-03",
+      "story": 1,
+      "name": "Балкон днём",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 2,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-04",
+      "story": 1,
+      "name": "Вечерний рынок",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 3,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-05",
+      "story": 1,
+      "name": "Спальня с рукописью",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 4,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-06",
+      "story": 1,
+      "name": "Ужин на балконе",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 5,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-07",
+      "story": 1,
+      "name": "Фестивальная площадь",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 6,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-08",
+      "story": 1,
+      "name": "Ступени у порта",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 7,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "summer-09",
+      "story": 1,
+      "name": "Кинозал перед премьерой",
+      "file": "assets/backgrounds/summer.png",
+      "cell": 8,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-01",
+      "story": 2,
+      "name": "Обзорный модуль перед рассветом",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 0,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-02",
+      "story": 2,
+      "name": "Пульт связи и журналы доступа",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 1,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-03",
+      "story": 2,
+      "name": "Коридор у передающего модуля",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 2,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-04",
+      "story": 2,
+      "name": "Резервный узел с аналоговой аппаратурой",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 3,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-05",
+      "story": 2,
+      "name": "Терминал с аварийной видеозаписью",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 4,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-06",
+      "story": 2,
+      "name": "Исследовательский модуль с контейнером",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 5,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-07",
+      "story": 2,
+      "name": "Грузовой шлюз и шкаф скафандров",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 6,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-08",
+      "story": 2,
+      "name": "Обшивка станции и антенна",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 7,
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "moon-09",
+      "story": 2,
+      "name": "Обшивка станции: освещённые окна и второй трос",
+      "file": "assets/backgrounds/moon.png",
+      "cell": 8,
+      "width": 1672,
+      "height": 941
+    }
+  ],
+  "scenes": [
+    {
+      "story": 0,
+      "scene": 0,
+      "title": "Последний поезд",
+      "background": "city-01",
+      "characters": [
+        "city-lera"
+      ],
+      "emotions": [
+        "afraid",
+        "determined"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 1,
+      "title": "Человек у выхода",
+      "background": "city-02",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "suspicious",
+        "neutral"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 2,
+      "title": "Неправильный час",
+      "background": "city-02",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "suspicious",
+        "sad"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 3,
+      "title": "Дом с заколоченным окном",
+      "background": "city-03",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "surprised",
+        "suspicious"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 4,
+      "title": "Соль на подоконнике",
+      "background": "city-04",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "afraid",
+        "surprised"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 5,
+      "title": "Архив тишины",
+      "background": "city-05",
+      "characters": [
+        "city-lera",
+        "city-mark",
+        "city-father"
+      ],
+      "emotions": [
+        "surprised",
+        "sad"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 6,
+      "title": "То, что помнит тело",
+      "background": "city-04",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "sad",
+        "tender"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 7,
+      "title": "Запись номер девять",
+      "background": "city-05",
+      "characters": [
+        "city-lera",
+        "city-mark",
+        "city-nina",
+        "city-father"
+      ],
+      "emotions": [
+        "afraid",
+        "sad",
+        "determined"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 8,
+      "title": "Ни шагу за меня",
+      "background": "city-06",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "determined",
+        "smile",
+        "tender"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 9,
+      "title": "Старый маршрут",
+      "background": "city-07",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "sad",
+        "smile"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 10,
+      "title": "Мост",
+      "background": "city-08",
+      "characters": [
+        "city-lera",
+        "city-mark"
+      ],
+      "emotions": [
+        "afraid",
+        "determined"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 11,
+      "title": "Не верь свету",
+      "background": "city-09",
+      "characters": [
+        "city-lera",
+        "city-mark",
+        "city-nina"
+      ],
+      "emotions": [
+        "afraid",
+        "smile",
+        "surprised"
+      ]
+    },
+    {
+      "story": 0,
+      "scene": 12,
+      "title": "Та, что приехала",
+      "background": "city-09",
+      "characters": [
+        "city-lera",
+        "city-mark",
+        "city-nina"
+      ],
+      "emotions": [
+        "afraid",
+        "sad",
+        "determined"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 0,
+      "title": "Ошибка в бронировании",
+      "background": "summer-01",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha",
+        "summer-bianchi"
+      ],
+      "emotions": [
+        "surprised",
+        "smile",
+        "afraid"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 1,
+      "title": "Вид, который можно поделить",
+      "background": "summer-03",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha",
+        "summer-bianchi"
+      ],
+      "emotions": [
+        "smile",
+        "suspicious"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 2,
+      "title": "Правила на обороте чека",
+      "background": "summer-02",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "smile",
+        "tender",
+        "sad"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 3,
+      "title": "Человек вне кадра",
+      "background": "summer-02",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "neutral",
+        "smile",
+        "tender"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 4,
+      "title": "Рынок",
+      "background": "summer-04",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "suspicious",
+        "tender",
+        "smile"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 5,
+      "title": "Письмо без адреса",
+      "background": "summer-05",
+      "characters": [
+        "summer-heroine",
+        "summer-friend"
+      ],
+      "emotions": [
+        "sad",
+        "determined"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 6,
+      "title": "Ужин на двоих",
+      "background": "summer-06",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "smile",
+        "tender"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 7,
+      "title": "Имя на афише",
+      "background": "summer-07",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha",
+        "summer-kirill"
+      ],
+      "emotions": [
+        "surprised",
+        "afraid",
+        "tender"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 8,
+      "title": "Слова, которые украли",
+      "background": "summer-08",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "angry",
+        "sad",
+        "determined"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 9,
+      "title": "Другая сторона объектива",
+      "background": "summer-02",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "suspicious",
+        "surprised"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 10,
+      "title": "Без красивого ответа",
+      "background": "summer-02",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha"
+      ],
+      "emotions": [
+        "sad",
+        "determined",
+        "smile"
+      ]
+    },
+    {
+      "story": 1,
+      "scene": 11,
+      "title": "Платье для себя",
+      "background": "summer-05",
+      "characters": [
+        "summer-heroine",
+        "summer-sasha",
+        "summer-friend"
+      ],
+      "emotions": [
+        "determined",
+        "tender",
+        "smile"
+      ],
+      "costumes": {
+        "summer-heroine": "evening"
+      }
+    },
+    {
+      "story": 1,
+      "scene": 12,
+      "title": "Первый ряд",
+      "background": "summer-09",
+      "characters": [
+        "summer-heroine",
+        "summer-kirill",
+        "summer-producer"
+      ],
+      "emotions": [
+        "angry",
+        "suspicious",
+        "determined"
+      ],
+      "costumes": {
+        "summer-heroine": "evening"
+      }
+    },
+    {
+      "story": 2,
+      "scene": 0,
+      "title": "Четырнадцать минут до рассвета",
+      "background": "moon-01",
+      "characters": [
+        "moon-lera"
+      ],
+      "emotions": [
+        "neutral",
+        "surprised"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 1,
+      "title": "Голос в наушнике",
+      "background": "moon-02",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "neutral",
+        "afraid"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 2,
+      "title": "Чужой пропуск",
+      "background": "moon-02",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-voronova"
+      ],
+      "emotions": [
+        "angry",
+        "determined"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 3,
+      "title": "Слепая зона",
+      "background": "moon-03",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "suspicious",
+        "afraid"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 4,
+      "title": "Старый контур",
+      "background": "moon-04",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "smile",
+        "surprised"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 5,
+      "title": "Пассажир, которого нет",
+      "background": "moon-05",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-voronova"
+      ],
+      "emotions": [
+        "surprised",
+        "afraid"
+      ],
+      "inserts": [
+        {
+          "character": "moon-ren",
+          "costume": "future",
+          "delivery": "video",
+          "emotion": "afraid"
+        }
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 6,
+      "title": "То, о чём молчат",
+      "background": "moon-05",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-voronova"
+      ],
+      "emotions": [
+        "sad",
+        "determined"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 7,
+      "title": "Лишние девять граммов",
+      "background": "moon-06",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-voronova"
+      ],
+      "emotions": [
+        "afraid",
+        "surprised"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 8,
+      "title": "Цена приказа",
+      "background": "moon-07",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-voronova"
+      ],
+      "emotions": [
+        "angry",
+        "determined",
+        "tender"
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 9,
+      "title": "По ту сторону стекла",
+      "background": "moon-08",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "afraid",
+        "smile",
+        "determined"
+      ],
+      "costumes": {
+        "moon-lera": "eva"
+      }
+    },
+    {
+      "story": 2,
+      "scene": 10,
+      "title": "Контрольная фраза",
+      "background": "moon-08",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "smile",
+        "tender",
+        "determined"
+      ],
+      "costumes": {
+        "moon-lera": "eva"
+      }
+    },
+    {
+      "story": 2,
+      "scene": 11,
+      "title": "Обратная сторона сигнала",
+      "background": "moon-08",
+      "characters": [
+        "moon-lera",
+        "moon-ren",
+        "moon-dispatcher"
+      ],
+      "emotions": [
+        "surprised",
+        "afraid",
+        "determined"
+      ],
+      "costumes": {
+        "moon-lera": "eva"
+      },
+      "inserts": [
+        {
+          "character": "moon-lera",
+          "costume": "future",
+          "delivery": "video",
+          "emotion": "determined"
+        }
+      ]
+    },
+    {
+      "story": 2,
+      "scene": 12,
+      "title": "Нулевой отсчёт",
+      "background": "moon-09",
+      "characters": [
+        "moon-lera",
+        "moon-ren"
+      ],
+      "emotions": [
+        "afraid",
+        "surprised",
+        "determined"
+      ],
+      "costumes": {
+        "moon-lera": "eva"
+      }
+    }
+  ]
+}
