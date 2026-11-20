@@ -10,8 +10,8 @@ def bundle(names,kind):
  (dist/'build').mkdir(exist_ok=True)
  (dist/relative).write_text(text)
  return relative
-script=bundle(['app.js','episodes.js','visual-assets.js','dialogue-data.js','identity.js','reader.js'],'js')
-style=bundle(['style.css','salon.css','reader.css'],'css')
+script=bundle(['app.js','episodes.js','visual-assets.js','dialogue-data.js','identity.js','summer-content.js','reader.js','summer-focus.js'],'js')
+style=bundle(['style.css','salon.css','reader.css','summer.css'],'css')
 index=(root/'web/index.template.html').read_text().replace('{{SCRIPT}}',script).replace('{{STYLE}}',style)
 (dist/'index.html').write_text(index)
 version=hashlib.sha256(index.encode()).hexdigest()[:16]

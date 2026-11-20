@@ -32,6 +32,14 @@ function compactFrame(frame){
  push();return chunks;
 }
 const readingFrames=legacyReadingFrames.map(story=>story.map(frames=>frames.flatMap((frame,legacyBeat)=>compactFrame(frame).map(part=>({...part,legacyBeat})))));
+// Retain a reader's position when descriptive openings are added to this edition.
+const summerRun=state.runs[1];
+if(typeof summerOriginalScenes!=='undefined'&&summerRun&&!summerRun.summerEdition){
+ const frames=readingFrames[1]?.[summerRun.step];
+ const firstOriginal=summerOriginalScenes[summerRun.step]?.[1].split('\n')[0];
+ if(frames&&firstOriginal){const offset=frames.findIndex(frame=>firstOriginal.startsWith(frame.text));if(offset>=0)summerRun.beat=offset+(Number.isInteger(summerRun.beat)?summerRun.beat:0);}
+ summerRun.summerEdition=2;summerRun.readerVersion=3;
+}
 for(const [id,run] of Object.entries(state.runs)){
  if(run.readerVersion===3)continue;
  const frames=readingFrames[id]?.[run.step];
@@ -84,7 +92,7 @@ function renderReadingScene(){
  const last=run.beat===frames.length-1;
  $('#choices').replaceChildren();
  if(!finished&&last)story.scenes[sceneIndex][2].forEach((choice,i)=>{const button=document.createElement('button');button.dataset.choice=i;button.textContent=personalizedText(choice[0]);$('#choices').append(button)});
- run.readerVersion=3;save();
+ run.readerVersion=3;if(active===1)run.summerEdition=2;save();
  if(reader.open&&!readingMenu.open&&!reader.contains(document.activeElement))$('.vn-stage').focus({preventScroll:true});
 }
 function advanceReading(){

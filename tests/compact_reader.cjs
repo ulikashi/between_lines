@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const root=process.cwd();const source=fs.readFileSync('dist/app.js','utf8').split('\nlet state;')[0]+fs.readFileSync('dist/episodes.js','utf8')+fs.readFileSync('dist/dialogue-data.js','utf8');
+const root=process.cwd();const source=fs.readFileSync('dist/app.js','utf8').split('\nlet state;')[0]+fs.readFileSync('dist/episodes.js','utf8')+fs.readFileSync('dist/dialogue-data.js','utf8')+fs.readFileSync('dist/summer-content.js','utf8');
 const code=fs.readFileSync('dist/reader.js','utf8').split('const reader=document')[0];
 const ctx={render(){},state:{runs:{0:{step:1,beat:2,trust:3},1:{step:0,beat:0}}}};vm.createContext(ctx);vm.runInContext(source+code+';this.result={stories,readingFrames,legacyReadingFrames}',ctx);const {stories,readingFrames,legacyReadingFrames}=ctx.result;
 const norm=s=>s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();let count=0,max=0;
