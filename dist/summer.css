@@ -28,3 +28,20 @@
 .summer-story .vn-dialogue:before{background-color:#173e70;background-image:linear-gradient(90deg,transparent calc(100% - 108px),#173e70 calc(100% - 108px)),url('../assets/ornaments/maiolica-border.svg');background-size:100% 100%,162px 27px}
 .summer-story .vn-dialogue,.summer-story.has-speaker .vn-dialogue{padding-top:53px}
 @media(max-width:700px) and (min-height:551px){.summer-story .vn-dialogue,.summer-story.has-speaker .vn-dialogue{padding-top:47px}.summer-story .vn-dialogue:after{width:80px;height:55px;top:-8px}.summer-story .vn-dialogue:before{background-size:100% 100%,138px 23px}}
+/* Botanical material study: one continuous painted surface. */
+.summer-story .vn-dialogue,.summer-story.has-speaker .vn-dialogue{padding:25px 29px;background:linear-gradient(90deg,#f5e4c5c9,#f5e4c5ee 22%,#f5e4c5f2 78%,#f5e4c588),url('../assets/ornaments/italian-painted.png') center/100% 100%;border:1px solid #b7a17b;border-radius:5px;box-shadow:0 12px 38px #231b224d,inset 0 0 0 4px #f5e4c533}
+.summer-story .vn-dialogue:before,.summer-story .vn-dialogue:after{display:none}
+.summer-story #story-text{font:400 19px/1.65 Georgia,serif;color:#34392e;text-shadow:none;letter-spacing:0}
+.summer-story #vn-name{font:600 14px/1.4 Manrope,sans-serif;color:#31506a;letter-spacing:.03em}
+.summer-story #choices button{border:1px solid #827d6155;border-left:1px solid #827d6155;background:#fff5df77;color:#34483b;box-shadow:none;border-radius:3px;font:14px/1.5 Manrope,sans-serif}.summer-story #choices button:hover{background:#fff5df;transform:none}
+#summer-finale{background:#e8d4ab url('../assets/ornaments/italian-painted.png') center/100% 100% no-repeat}
+.finale-postcard{display:flex;min-height:100dvh;align-items:center;justify-content:center;padding:60px 24px;background:none}
+.finale-view,.finale-lemon,.finale-flourish{display:none}
+.finale-letter{display:block;width:min(460px,100%);padding:35px 30px;background:#f8ecd09c;border:0;box-shadow:none;border-radius:8px;overflow:visible;backdrop-filter:blur(5px)}
+.finale-kicker{font:500 12px/1.6 Manrope,sans-serif;letter-spacing:.12em;margin:0 0 28px;color:#57604a}
+.finale-letter h2{font:400 52px/1.15 Georgia,serif;letter-spacing:-.035em;color:#283f4e;margin:0 0 24px}.finale-letter h2 br{display:none}.finale-letter h2 em{font-style:normal;font-weight:400}.finale-letter h2 em:before{content:' '}
+.finale-note{font:400 16px/1.7 Georgia,serif;color:#4f5544;margin-bottom:28px}
+#summer-finale table{color:#3c493d;font-size:14px;margin-bottom:28px}#summer-finale td{font:400 20px/1.4 Georgia,serif}#summer-finale th,#summer-finale td{border-color:#6b70582e;padding:12px 4px}#summer-finale thead th{color:#5b6555}
+#summer-finale button{background:#344d43;color:#faf0d9;border:1px solid #344d43;box-shadow:none;border-radius:3px;font:14px/1.5 Manrope,sans-serif}#summer-finale button:last-child{color:#344d43;border-color:#63705c88;background:#f8efd955}#summer-finale button:hover{background:#496353;color:#fff3da;transform:none}
+.summer-menu{background:#f4e5c9 url('../assets/ornaments/italian-painted.png') center/100% 100%!important;padding-top:34px!important;border:1px solid #a39473!important;border-radius:5px!important}
+@media(max-width:700px){.summer-story .vn-dialogue,.summer-story.has-speaker .vn-dialogue{padding:22px 23px}.summer-story #story-text{font-size:17px;line-height:1.6}.finale-postcard{padding:100px 28px}.finale-letter{padding:28px 16px;background:#f8ecd0b3}.finale-letter h2{font-size:38px}.finale-kicker{font-size:10px}.finale-note{font-size:15px}#summer-finale table{font-size:12px}#summer-finale td{font-size:19px}}
