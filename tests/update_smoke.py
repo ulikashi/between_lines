@@ -29,10 +29,10 @@ with sync_playwright() as p:
   page.goto(url+'?release=atomic',wait_until='networkidle')
   page.locator('.card-open[data-play="0"]').click();assert page.locator('#reader').is_visible()
   assert page.evaluate('state.runs[0].step')==2
-  page.locator('#vn-next').click();page.locator('#exit').click()
+  page.locator('.vn-stage').click();page.locator('#vn-menu-toggle').click();page.locator('#vn-home').click()
   page.locator('.card-open[data-play="1"]').click();page.locator('#hero-name').fill('Анна');page.locator('.name-start').click()
   assert page.locator('#reader').is_visible()
-  for _ in range(2):page.locator('#vn-next').click()
+  for _ in range(2):page.locator('.vn-stage').click()
   page.wait_for_function("document.querySelector('#vn-character').dataset.speaker==='summer-sasha'")
   assert page.locator('#vn-character').is_visible()
   assert page.evaluate('state.names[1]')=='Анна'

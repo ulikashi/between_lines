@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync('dist/reader.js','utf8');
+const listeners={};const stage={addEventListener:(name,fn)=>listeners[name]=fn};
+const ctx={reader:{open:true},readingMenu:{open:false},state:{runs:{0:{step:0,beat:0,trust:2}}},active:0,stories:[{scenes:[{}]}],readingFrames:[[[{}, {}, {}]]],showScene(){},$:()=>stage,window:{getSelection:()=>''}};
+vm.createContext(ctx);vm.runInContext(source.slice(source.indexOf('function advanceReading()')),ctx);
+const target={closest:()=>null};const tap=()=>listeners.click({target,button:0});
+tap();assert.equal(ctx.state.runs[0].beat,1);
+ctx.readingMenu.open=true;tap();assert.equal(ctx.state.runs[0].beat,1);ctx.readingMenu.open=false;
+listeners.click({target:{closest:()=>({})},button:0});assert.equal(ctx.state.runs[0].beat,1);
+listeners.pointerdown({clientX:0,clientY:0});listeners.pointermove({clientX:0,clientY:25});tap();assert.equal(ctx.state.runs[0].beat,1);
+listeners.pointerdown({clientX:0,clientY:0});tap();assert.equal(ctx.state.runs[0].beat,2);tap();assert.equal(ctx.state.runs[0].beat,2);assert.equal(ctx.state.runs[0].step,0);assert.equal(ctx.state.runs[0].trust,2);
+ctx.state.runs[0].beat=0;listeners.keydown({target,key:' ',preventDefault(){}});assert.equal(ctx.state.runs[0].beat,1);
+const markup=source.split('reader.innerHTML=`')[1].split('`;')[0];for(const id of ['vn-position','vn-next','vn-back','stats','bar','scene-title','chapter-label','reader-title','vn-delivery'])assert(!markup.includes('id="'+id+'"'));
+assert(source.includes("$('.vn-speaker').hidden=!c"));console.log('PASS: tap/keyboard navigation, menu blocking, no accidental choice or drag advance, hidden stats, no counters/headings, narrator label hidden');
