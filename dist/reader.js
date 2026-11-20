@@ -52,6 +52,12 @@ $('#vn-home').onclick=()=>{readingMenu.close();closeReader()};
 readingMenu.addEventListener('close',()=>{if(reader.open)$('.vn-stage').focus({preventScroll:true})});
 reader.addEventListener('cancel',event=>{event.preventDefault();openReadingMenu()});
 reader.addEventListener('close',()=>{if(readingMenu.open)readingMenu.close()});
+// Reserve actual text height so mobile portraits never sit behind the copy.
+const dialogueObserver=new ResizeObserver(entries=>{
+ const height=entries[0].borderBoxSize?.[0]?.blockSize||entries[0].target.getBoundingClientRect().height;
+ reader.style.setProperty('--dialogue-height',`${Math.ceil(height)}px`);
+});
+dialogueObserver.observe($('.vn-dialogue'));
 function atlas(el,file,cell){el.style.backgroundSize=cell==null?'cover':'300% 300%';el.style.backgroundImage=`url("${file}")`;el.style.backgroundPosition=cell==null?'center':`${cell%3*50}% ${Math.floor(cell/3)*50}%`;}
 let characterRequest=0;
 let portraitKey="";
