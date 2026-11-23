@@ -48,7 +48,7 @@ for(const [id,run] of Object.entries(state.runs)){
 }
 const reader=document.querySelector('#reader');
 reader.classList.add('visual-reader');
-reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
+reader.innerHTML=`<button id="vn-sound-toggle" aria-label="Звук истории"></button><button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
 const readingMenu=document.createElement('dialog');readingMenu.id='reading-menu';readingMenu.setAttribute('aria-label','Меню истории');
 readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
@@ -65,7 +65,13 @@ const soundtrack = createReadingAudio(syncReadingSound);
 let audioScene;
 const soundSwitch = $('#reading-sound');
 const largeSwitch = $('#reading-large');
-soundSwitch.checked = preferences.sound;
+const sceneSoundButton = $('#vn-sound-toggle');
+function displaySoundSetting(){
+ soundSwitch.checked = preferences.sound;
+ sceneSoundButton.setAttribute('aria-pressed', String(preferences.sound));
+ sceneSoundButton.textContent = preferences.sound ? 'Звук вкл.' : 'Звук выкл.';
+}
+displaySoundSetting();
 largeSwitch.checked = preferences.large;
 reader.classList.toggle('large-type', preferences.large);
 function syncReadingSound(){
@@ -79,7 +85,14 @@ function unlockReadingSound(){
 }
 document.addEventListener('click',unlockReadingSound);
 document.addEventListener('keyup',unlockReadingSound);
-soundSwitch.onchange = () => { preferences.sound = soundSwitch.checked; save(); unlockReadingSound(); syncReadingSound(); };
+function setStorySound(enabled){
+ preferences.sound = enabled;
+ displaySoundSetting();
+ save();
+ if(enabled) unlockReadingSound(); else syncReadingSound();
+}
+soundSwitch.onchange = () => setStorySound(soundSwitch.checked);
+sceneSoundButton.onclick = () => setStorySound(!preferences.sound);
 largeSwitch.onchange = () => {
  preferences.large = largeSwitch.checked;
  reader.classList.toggle('large-type', preferences.large);
