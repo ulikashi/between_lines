@@ -54,31 +54,32 @@ readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
  <div class="reading-controls">
   <h3>Настройки чтения</h3>
-  <label class="reading-option">Шум прибоя <input type="checkbox" id="reading-sound" role="switch"></label>
+  <label class="reading-option">Звук истории <input type="checkbox" id="reading-sound" role="switch"></label>
   <label class="reading-option">Крупный шрифт <input type="checkbox" id="reading-large" role="switch"></label>
   <button id="vn-resume" autofocus>Продолжить чтение</button>
   <div class="reading-links"><button id="vn-home">На главный экран</button><button id="vn-reset">Начать заново</button></div>
  </div>`;
 document.body.append(readingMenu);
-const preferences = state.readingPreferences ||= {sound:false, large:false};
-const shore = new Audio('assets/audio/shore.wav');
-shore.preload = 'none';
-shore.loop = true;
-shore.volume = 0.38;
+const preferences = state.readingPreferences ||= {sound:true, large:false};
+const soundtrack = createReadingAudio(syncReadingSound);
+let audioScene;
 const soundSwitch = $('#reading-sound');
 const largeSwitch = $('#reading-large');
 soundSwitch.checked = preferences.sound;
 largeSwitch.checked = preferences.large;
 reader.classList.toggle('large-type', preferences.large);
 function syncReadingSound(){
- if (!preferences.sound || !reader.open || document.hidden) { shore.pause(); return; }
- shore.play().catch(error => {
-  if(error.name === 'AbortError') return;
-  soundSwitch.checked = preferences.sound = false;
-  save();
- });
+ if (!preferences.sound || !reader.open || document.hidden) { soundtrack.stop(); return; }
+ soundtrack.play(audioScene);
 }
-soundSwitch.onchange = () => { preferences.sound = soundSwitch.checked; save(); syncReadingSound(); };
+function unlockReadingSound(){
+ if (!preferences.sound || !reader.open) return;
+ soundtrack.prepare();
+ syncReadingSound();
+}
+document.addEventListener('click',unlockReadingSound);
+document.addEventListener('keyup',unlockReadingSound);
+soundSwitch.onchange = () => { preferences.sound = soundSwitch.checked; save(); unlockReadingSound(); syncReadingSound(); };
 largeSwitch.onchange = () => {
  preferences.large = largeSwitch.checked;
  reader.classList.toggle('large-type', preferences.large);
@@ -86,7 +87,7 @@ largeSwitch.onchange = () => {
 };
 new MutationObserver(syncReadingSound).observe(reader,{attributes:true,attributeFilter:['open']});
 document.addEventListener('visibilitychange',syncReadingSound);
-window.addEventListener('pagehide',()=>shore.pause());
+window.addEventListener('pagehide',()=>soundtrack.stop());
 window.addEventListener('pageshow',syncReadingSound);
 function openReadingMenu(){
  if(readingMenu.open)return;
@@ -120,6 +121,8 @@ function renderReadingScene(){
  $('.vn-stage').style.backgroundImage=`url("${imageUrl(story)}")`;
  const frames=active===1&&run.pendingChoice?summerBranchFrames(run):active===1&&!finished?summerSceneFrames(run):readingFrames[active][sceneIndex];run.beat=finished?0:Math.max(0,Math.min(Number.isInteger(run.beat)?run.beat:0,frames.length-1));
  const frame=finished?{text:'Продолжение следует.'}:frames[run.beat];
+ audioScene=finished?null:{story:active,bg:bg.id,text:frame.text,key:[active,run.step,run.pendingChoice,run.beat].join('/')};
+ if (finished) soundtrack.stop(); else syncReadingSound();
  const c=visualAssets.characters.find(c=>c.id===frame.speaker),portrait=$('#vn-character');
  const request=++characterRequest;
  $('.vn-stage').classList.toggle('has-speaker',!!c);
