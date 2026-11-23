@@ -3,7 +3,7 @@ const ctx={render(){},save(){},showScene(){},active:1,state:{runs:{1:{step:0,bea
 for(const file of ['app.js','episodes.js','dialogue-data.js','summer-content.js','visual-assets.js','reader.js','summer-branches.js','summer-sequels.js']){let s=fs.readFileSync('dist/'+file,'utf8');if(file==='app.js')s=s.split('\nlet state;')[0];if(file==='reader.js')s=s.split('const reader=document')[0];vm.runInContext(s,ctx);}
 vm.runInContext(`
 if(stories[1].scenes.length!==33)throw Error('scene count');
-for(let ep=0;ep<3;ep++){
+for(let ep=0;ep<4;ep++){
  const r=state.runs[1],start=currentSummerEpisode().start,end=readingEnd();
  for(let step=start;step<end;step++){
   r.step=step;r.pendingChoice=false;
@@ -13,7 +13,7 @@ for(let ep=0;ep<3;ep++){
   if(!summerBranchFrames(r).length)throw Error('empty response');r.pendingChoice=false;r.step++;
  }
  const total=r.truth+r.trust+r.boundary;if(total!==end)throw Error('cumulative scores');
- if(ep<2)nextSummerEpisode();
+ if(ep<3)nextSummerEpisode();
 }
 const r=state.runs[1];replaySummerEpisode();if(r.step!==23||r.truth+r.trust+r.boundary!==23)throw Error('replay baseline');
 if(Object.keys(r.decisions).some(k=>Number(k)>=23))throw Error('replay decisions');
@@ -21,8 +21,8 @@ this.counts=summerEpisodes.map(e=>({title:e.title,words:readingFrames[1].slice(e
 `,ctx);console.log(ctx.counts);console.log('PASS: 33 scenes, all responses, cumulative stats, duplicate guard, next episode, replay baseline and choices');
 vm.runInContext(`
 for(const route of [0,1]){
- state.runs[1]={step:13,episode:0,truth:9,trust:3,boundary:1};nextSummerEpisode();
- for(let ep=1;ep<3;ep++){
+ state.runs[1]={step:13,episode:1,truth:9,trust:3,boundary:1};nextSummerEpisode();
+ for(let ep=2;ep<4;ep++){
   let r=state.runs[1];const end=readingEnd();
   while(r.step<end){
    const scene=r.step;chooseSummer(route);
@@ -35,7 +35,7 @@ for(const route of [0,1]){
    r.pendingChoice=false;r.step++;r.beat=0;
   }
   if(r.truth+r.trust+r.boundary!==end)throw Error('legacy total');
-  if(ep===1)nextSummerEpisode();
+  if(ep===2)nextSummerEpisode();
  }
 }
 `,ctx);console.log('PASS: both sequel routes, saved response resume, old completed saves, backgrounds and portraits');

@@ -1,6 +1,22 @@
 /* Each scene is authored as directed beats; choices always have an immediate reply. */
-const summerEpisodes=[{title:'Своим именем',start:0,end:13},{title:'После титров',start:13,end:23},{title:'Обратный адрес',start:23,end:33}];
-function currentSummerEpisode(){return summerEpisodes[Math.min(2,state.runs[1]?.episode||0)]}
+const summerEpisodes=[{title:'Комната с балконом',start:0,end:8},{title:'Своим именем',start:8,end:13},{title:'После титров',start:13,end:23},{title:'Обратный адрес',start:23,end:33}];
+if (!state.summerSplitEdition) {
+ const run = state.runs[1];
+ if (run) {
+  if (run.episode) run.episode++;
+  else if (run.step >= 8) {
+   run.episode = 1;
+   run.episodeBaseline = {trust:0, truth:0, boundary:0};
+   for (let step=0; step<8; step++) {
+    const stat = stories[1].scenes[step][2][run.decisions?.[step]]?.[1];
+    if (stat) run.episodeBaseline[stat]++;
+   }
+  }
+ }
+ state.summerSplitEdition = true;
+ save();
+}
+function currentSummerEpisode(){return summerEpisodes[Math.min(summerEpisodes.length-1,state.runs[1]?.episode||0)]}
 function readingEnd(){return active===1?currentSummerEpisode().end:stories[active].scenes.length}
 const N=text=>({text}),S=text=>({text,speaker:'summer-sasha'}),H=text=>({text,speaker:'summer-heroine'}),K=text=>({text,speaker:'summer-kirill'}),P=text=>({text,speaker:'summer-producer'});
 const sequelScenes=[
@@ -134,7 +150,7 @@ N('В телефоне появляется новое сообщение. «Е�
 ];
 for(const [title,location,frames,choices] of sequelScenes){const index=stories[1].scenes.length;stories[1].scenes.push([title,frames.map(f=>f.text).join('\n'),choices.map(c=>c.slice(0,2))]);readingFrames[1].push(frames.flatMap(compactFrame));summerConsequences.push(choices.map(c=>c[2].map(f=>[f.text,f.speaker])));const original=visualAssets.scenes.find(s=>s.story===1&&s.scene===location);visualAssets.scenes.push({...original,scene:index});}
 const summerStatKeys=['trust','truth','boundary'];
-function nextSummerEpisode(){const r=state.runs[1];if(r.step<currentSummerEpisode().end||(r.episode||0)>=2)return;r.episode=(r.episode||0)+1;r.episodeBaseline=Object.fromEntries(summerStatKeys.map(k=>[k,r[k]||0]));r.step=currentSummerEpisode().start;r.beat=0;r.pendingChoice=false;save();showScene();}
+function nextSummerEpisode(){const r=state.runs[1];if(r.step<currentSummerEpisode().end||(r.episode||0)>=summerEpisodes.length-1)return;r.episode=(r.episode||0)+1;r.episodeBaseline=Object.fromEntries(summerStatKeys.map(k=>[k,r[k]||0]));r.step=currentSummerEpisode().start;r.beat=0;r.pendingChoice=false;save();showScene();}
 function replaySummerEpisode(){const r=state.runs[1],ep=currentSummerEpisode();for(const k of summerStatKeys)r[k]=r.episodeBaseline?.[k]||0;for(const key of Object.keys(r.decisions||{}))if(Number(key)>=ep.start)delete r.decisions[key];r.step=ep.start;r.beat=0;r.pendingChoice=false;save();showScene();}
 // A genuine full restart clears all episodes; replaying only the current episode preserves earlier totals.
 const sequelAtmosphere=[
@@ -169,3 +185,64 @@ if(run.step===27&&d[4]===0)extra=[H('Поэтому на рынке ты сна�
 if(run.step===27&&d[4]===1)extra=[H('Ты на рынке даже не стал меня уговаривать.'),S('Отказ — тоже ответ. Мне потребовалось время, чтобы перестать слышать в нём приглашение спорить.')];
 if(run.step===30&&d[6]===0)extra=[N('За первым ужином ты призналась ему, что хочешь увидеть своё имя на обложке. Сегодня впервые позволяешь услышать то, что будет под этой обложкой.')];
 return [...extra.flatMap(compactFrame),...frames];};
+
+function extendSummerScene(index, before, after = []) {
+ const frames = readingFrames[1][index];
+ frames.unshift(...before.flatMap(compactFrame));
+ frames.push(...after.flatMap(compactFrame));
+}
+
+extendSummerScene(0, [
+ N('В последний вечер перед отпуском ты оставила на кухонном столе две вещи: распечатку чужого романа и билет до Генуи. Подруга пришла полить цветы, посмотрела на раскрытый чемодан и вынула из него распечатку.'),
+ H('Там всего сорок страниц. Я в поезде успею.'),
+ N('«А потом тебе пришлют следующие сорок», — сказала она. Ты уже открыла рот, чтобы поспорить, и вдруг поняла, что именно на это и рассчитывала. Работать в дороге ты умела. Проводить целый день одна после расставания ещё предстояло научиться. Распечатка осталась в Москве.'),
+ N('Комнату у Бьянки ты выбрала по фотографии балкона. На соседних объявлениях показывали пляж с высоты, а здесь в кадр попала верёвка с прищепками. Ты представила, как утром повесишь туда мокрый купальник. Этого маленького плана хватило, чтобы оплатить неделю.'),
+ N('Из аэропорта ты добралась до вокзала, пересела на электричку вдоль берега. Последние три остановки простояла у двери с чемоданом, потому что море было видно только с этой стороны. У станции купила литр воды и пешком дошла до дома по фотографиям, которые прислала хозяйка. Ключ лежал в ящичке у входа, как она и обещала.')
+]);
+extendSummerScene(1, [], [
+ S('Я вчера занял маленькую. В большой окно на улицу. Хочешь сначала послушать, как там с шумом?'),
+ N('Он распахивает ставни. Снизу доносится звон посуды и спор двух мальчишек о велосипеде. Ты высовываешься чуть дальше. Под окном как раз та верёвка. Одной зелёной прищепки не хватает пружины.'),
+ H('Я эту комнату по балкону узнала. А ты как сюда попал?'),
+ S('Мне прислали три адреса на выбор. В двух нельзя было пользоваться кухней. Я после месяца с гостиничным чайником хотел хотя бы яйцо сварить.')
+]);
+extendSummerScene(6, [], [
+ H('А они тебе правда потом написали? Молодожёны.'),
+ S('Она прислала снимок. Её отец танцует в носках, туфли под стулом. Я бы выкинул — там полголовы срезано. А она говорит, отец последний раз танцевал на её выпускном.'),
+ N('Саша берёт банку с огарком свечи за самый край, обжигается и достаёт полотенце. Ты придерживаешь дверь, пока он носит посуду. Потом вы ещё немного сидите без свечи. Снизу кажется, что на балконе уже никого нет.')
+]);
+extendSummerScene(7, [], [
+ H('Кирилл Ветров — мой бывший. Мы пять лет жили вместе.'),
+ S('Тот, что здесь на афише?'),
+ H('Да. Я ему на нашей кухне читала книгу. Видишь название под его фотографией? Даже предлог тот же.'),
+ N('Ты вспоминаешь, как он предлагал заменить «для» на «у», а ты спорила, что тогда получится объявление о сдаче жилья. Смешная была ссора. Сейчас ты бы дорого дала за возможность снова поспорить с ним всего лишь о предлоге.')
+]);
+const commissionReveal = [
+ N('У Саши в кармане звонит телефон. Он нащупывает в кармане карандаш, чтобы записать время. Голос в трубке слышно и тебе. «Саш, это от Ветрова. Кирилл попросил портрет до показа. Возьми второй объектив».'),
+ H('Погоди. Это ты будешь его снимать?'),
+ S('Да. Агентство заказало съёмку для Кирилла. Я подписал заказ ещё дома.'),
+ H('У афиши я тебе всё рассказала. Почему мне пришлось узнать про съёмку вот так?'),
+ N('Он складывает бумажку с записанным временем. Ты ждёшь, пока он сам поднимет глаза.'),
+ S('Я мог сказать сразу. Побоялся, что ты уйдёшь.')
+];
+for (const branch of summerConsequences[7]) {
+ branch.push(...commissionReveal.map(frame => [frame.text, frame.speaker]));
+}
+
+extendSummerScene(8, [
+ N('Утром ты находишь на кухне две чистые чашки. Вчера вы вернулись раздельно. За стеной щёлкает выключатель, и Саша останавливается на пороге, ещё сонный, со следом наволочки на щеке.'),
+ H('Я хочу посмотреть трейлер. Вчера на площади я даже не смогла его открыть. Пойдём к воде? Если я потом попрошу побыть одной, ты уйдёшь?'),
+ S('Да. Дай мне только обуться.')
+]);
+readingFrames[1][9] = [
+ N('После обеда ты ищешь в почте письмо со старым вложением. По названию романа ничего. Тогда ты вспоминаешь, что в тот день у вас сломалась духовка. По слову «мастер» находится вся цепочка. Внизу, после списка телефонов, твоя приписка: «И главы, как обещала».'),
+ N('К вечеру рядом с ноутбуком лежит и распечатанный проект договора. Строка для твоей подписи пуста. Саша ставит у двери пакет с едой. Ты сама зовёшь его посмотреть на дату письма.'),
+ H('Вот когда он получил главы. А когда ты подписывал свой заказ, что там было про фильм?'),
+ S('Время, площадка, сколько портретов отдать в тот же вечер. Контакт — Кирилл Ветров. Про книгу ни слова. Что вы жили вместе, я узнал от тебя на площади.'),
+ H('Я ведь стояла рядом и рассказывала, как читала ему вслух. А ты уже знал, где будешь стоять с камерой.'),
+ S('Знал. Мне понравилось, как мы вчера сидели на балконе. Хотел, чтобы ты ещё хоть немного смотрела на меня так же.'),
+ N('Он кладёт на стол пропуск. На обороте — название агентства и мелким шрифтом «ассистент».'),
+ S('С этим можно пройти на показ со мной. Я оставлю его здесь.')
+].flatMap(compactFrame);
+extendSummerScene(11, [], [
+ N('Билет приходит на почту, пока ты ищешь вторую серьгу. Место в первом ряду. У двери ты меняешь босоножки на те сандалии, в которых дошла сюда от станции. До кинотеатра пятнадцать минут пешком, и все пятнадцать тебе сейчас нужны.')
+]);
