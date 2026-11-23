@@ -10,16 +10,13 @@ document.addEventListener('click', event => {
  if (!trigger) return;
  const story = stories[Number(trigger.dataset.preview)];
  const available = story.id === 1;
- preview.innerHTML = `<button class="preview-close" aria-label="Закрыть">×</button><div class="preview-stage theatre-stage"><img src="${imageUrl(story)}" alt=""></div><section><h2 id="preview-title">${story.title}</h2><p>${story.tags.join(' · ')}</p><p>${story.description}</p>${available ? '<p>4 серии</p><button class="primary preview-start"></button>' : '<p>В разработке</p>'}</section>`;
+ preview.innerHTML = `<button class="preview-close" aria-label="Закрыть">×</button><div class="preview-heading"><img src="${imageUrl(story)}" width="1024" height="1536" alt=""><div><p class="preview-genre">${story.tags.join(' · ')}</p><h2 id="preview-title">${story.title}</h2><p class="preview-status">${available ? '4 серии' : 'В разработке'}</p></div></div><section><p>${story.description}</p>${available ? '<button class="primary preview-start"></button>' : ''}</section>`;
  preview.querySelector('.preview-close').onclick = () => preview.close();
  if (available) {
   const start = preview.querySelector('.preview-start');
   start.textContent = state.runs[story.id] ? 'Продолжить чтение' : 'Начать читать';
   start.onclick = () => { preview.close(); play(story.id); };
  }
- const cover = trigger.closest('.card').querySelector('.cover');
- cover.classList.add('curtains-open');
- preview.addEventListener('close', () => cover.classList.remove('curtains-open'), { once: true });
  preview.showModal();
 });
 const finale=document.createElement('dialog');finale.id='summer-finale';finale.setAttribute('aria-labelledby','finale-title');document.body.append(finale);
