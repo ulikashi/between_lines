@@ -48,7 +48,7 @@ for(const [id,run] of Object.entries(state.runs)){
 }
 const reader=document.querySelector('#reader');
 reader.classList.add('visual-reader');
-reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></section></div>`;
+reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
 const readingMenu=document.createElement('dialog');readingMenu.id='reading-menu';readingMenu.setAttribute('aria-label','Меню истории');
 readingMenu.innerHTML=`<button id="vn-resume">Продолжить чтение</button><button id="vn-reset">Начать историю заново</button><button id="vn-home">На главный экран</button>`;
 document.body.append(readingMenu);
@@ -70,13 +70,13 @@ function atlas(el,file,cell){el.style.backgroundSize=cell==null?'cover':'300% 30
 let characterRequest=0;
 let portraitKey="";
 function renderReadingScene(){
- const story=stories[active],run=state.runs[active],finished=run.step>=story.scenes.length;
- const sceneIndex=Math.min(run.step,story.scenes.length-1),direction=visualAssets.scenes.find(s=>s.story===active&&s.scene===sceneIndex);
+ const story=stories[active],run=state.runs[active],finished=run.step>=(typeof readingEnd==='function'?readingEnd():story.scenes.length);
+ const sceneIndex=Math.min(run.step,(typeof readingEnd==='function'?readingEnd():story.scenes.length)-1),direction=visualAssets.scenes.find(s=>s.story===active&&s.scene===sceneIndex);
  const bg=visualAssets.backgrounds.find(b=>b.id===direction.background);
  const backdrop=$('.vn-background');atlas(backdrop,bg.file,bg.cell);backdrop.style.aspectRatio=`${bg.width}/${bg.height}`;
  // A local cover remains underneath if a location has not been cached yet.
  $('.vn-stage').style.backgroundImage=`url("${imageUrl(story)}")`;
- const frames=readingFrames[active][sceneIndex];run.beat=finished?0:Math.max(0,Math.min(Number.isInteger(run.beat)?run.beat:0,frames.length-1));
+ const frames=active===1&&run.pendingChoice?summerBranchFrames(run):active===1&&!finished?summerSceneFrames(run):readingFrames[active][sceneIndex];run.beat=finished?0:Math.max(0,Math.min(Number.isInteger(run.beat)?run.beat:0,frames.length-1));
  const frame=finished?{text:'Продолжение следует.'}:frames[run.beat];
  const c=visualAssets.characters.find(c=>c.id===frame.speaker),portrait=$('#vn-character');
  const request=++characterRequest;
@@ -91,15 +91,16 @@ function renderReadingScene(){
  $('#story-text').textContent=personalizedText(frame.text);$('#vn-live').scrollTop=0;
  const last=run.beat===frames.length-1;
  $('#choices').replaceChildren();
- if(!finished&&last)story.scenes[sceneIndex][2].forEach((choice,i)=>{const button=document.createElement('button');button.dataset.choice=i;button.textContent=personalizedText(choice[0]);$('#choices').append(button)});
+ if(!finished&&last&&!run.pendingChoice)story.scenes[sceneIndex][2].forEach((choice,i)=>{const button=document.createElement('button');button.dataset.choice=i;button.textContent=personalizedText(choice[0]);$('#choices').append(button)});
  run.readerVersion=3;if(active===1)run.summerEdition=2;save();
  if(reader.open&&!readingMenu.open&&!reader.contains(document.activeElement))$('.vn-stage').focus({preventScroll:true});
 }
 function advanceReading(){
  if(!reader.open||readingMenu.open)return;
  const run=state.runs[active];
- if(run.step>=stories[active].scenes.length)return;
- if(run.beat<readingFrames[active][run.step].length-1){run.beat++;showScene();}
+ if(run.step>=(typeof readingEnd==='function'?readingEnd():stories[active].scenes.length))return;
+ if(active===1&&run.pendingChoice){if(run.beat<summerBranchFrames(run).length-1){run.beat++;}else{run.pendingChoice=false;run.step++;run.beat=0;}save();showScene();return;}
+ if(run.beat<(active===1?summerSceneFrames(run):readingFrames[active][run.step]).length-1){run.beat++;showScene();}
 }
 const readingStage=$('.vn-stage');
 let pressOrigin=null,dragged=false;
