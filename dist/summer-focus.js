@@ -1,9 +1,24 @@
 const availablePlay=play;
 play=function(id){if(id!==1)return;reader.classList.add('summer-story');readingMenu.classList.add('summer-menu');naming.classList.add('summer-menu');availablePlay(id)};
 stories[1].description='Ты приехала к морю, чтобы снова услышать себя. Но на чужой премьере узнаёшь собственную историю.';
-const collectionRender=render;
-render=function(){collectionRender();document.querySelectorAll('[data-play]').forEach(button=>{if(Number(button.dataset.play)!==1){button.disabled=true;button.setAttribute('aria-label','В разработке');if(!button.classList.contains('card-open'))button.textContent='В разработке';}});document.querySelectorAll('.card').forEach(card=>{const button=card.querySelector('[data-play]');if(button&&Number(button.dataset.play)!==1){card.classList.add('in-development');card.querySelector('.cover-label').textContent='В разработке';card.querySelector('.card-meta span').textContent='Скоро в библиотеке';}})};
-const hero=document.querySelector('.hero');hero.querySelector('[data-play]').dataset.play='1';hero.querySelector('[data-play]').disabled=false;hero.querySelector('[data-play]').removeAttribute('aria-label');hero.querySelector('h2').innerHTML='Не <em>случайные</em>';hero.querySelector('p').textContent='Месяц у моря. Чужой ключ. История, которой пора вернуть твоё имя.';hero.querySelector('.hero-tags').textContent='ИТАЛИЯ · МЕДЛЕННОЕ СБЛИЖЕНИЕ';hero.querySelector('img').alt='Залитый солнцем балкон над итальянским побережьем';hero.querySelector('img').src='assets/backgrounds/summer-03-hd.jpg';
+const preview = document.createElement('dialog');
+preview.id = 'story-preview';
+preview.setAttribute('aria-labelledby', 'preview-title');
+document.body.append(preview);
+document.addEventListener('click', event => {
+ const trigger = event.target.closest('[data-preview]');
+ if (!trigger) return;
+ const story = stories[Number(trigger.dataset.preview)];
+ const available = story.id === 1;
+ preview.innerHTML = `<button class="preview-close" aria-label="Закрыть">×</button><img src="${imageUrl(story)}" alt=""><section><h2 id="preview-title">${story.title}</h2><p>${story.tags.join(' · ')}</p><p>${story.description}</p>${available ? '<p>3 серии · около 10 минут на серию</p><button class="primary preview-start"></button>' : '<p>В разработке</p>'}</section>`;
+ preview.querySelector('.preview-close').onclick = () => preview.close();
+ if (available) {
+  const start = preview.querySelector('.preview-start');
+  start.textContent = state.runs[story.id] ? 'Продолжить чтение' : 'Начать читать';
+  start.onclick = () => { preview.close(); play(story.id); };
+ }
+ preview.showModal();
+});
 const finale=document.createElement('dialog');finale.id='summer-finale';finale.setAttribute('aria-labelledby','finale-title');document.body.append(finale);
 function showSummerFinale(){const r=state.runs[1],ep=currentSummerEpisode(),baseline=r.episodeBaseline||{};finale.innerHTML=`<div class="finale-postcard"><div class="finale-view"><div class="finale-caption"><p>Не случайные</p><span>Лето, которое останется с тобой</span></div></div><section class="finale-letter"><div class="finale-lemon" aria-hidden="true"></div><p class="finale-kicker">Серия ${(r.episode||0)+1} завершена</p><h2 id="finale-title">${ep.title}</h2><div class="finale-stats" aria-label="Итоги серии">${[['trust','Близость','❦'],['truth','Честность','✧'],['boundary','Опора на себя','❧']].map(([key,label,symbol])=>`<div class="finale-stat"><img class="stat-icon" src="assets/ornaments/stat-${key}.png" alt=""><span class="stat-label">${label}</span><span class="stat-value" aria-label="Всего ${r[key]||0}">${r[key]||0}</span><span class="stat-gain" aria-label="За серию плюс ${(r[key]||0)-(baseline[key]||0)}">(+${(r[key]||0)-(baseline[key]||0)})</span></div>`).join('')}</div><div class="finale-actions">${(r.episode||0)<2?'<button id="episode-next">Следующая серия</button>':''}<button id="episode-replay">Пройти серию заново</button><button id="episode-home">На главный экран</button></div><div class="finale-flourish" aria-hidden="true"></div></section></div>`;finale.showModal();const next=document.querySelector('#episode-next');if(next)next.onclick=()=>{finale.close();nextSummerEpisode()};document.querySelector('#episode-replay').onclick=()=>{finale.close();replaySummerEpisode()};document.querySelector('#episode-home').onclick=()=>{finale.close();closeReader()};}
 const standardAdvance=advanceReading;
