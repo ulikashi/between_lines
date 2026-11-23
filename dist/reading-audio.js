@@ -6,6 +6,37 @@ function createReadingAudio(onStateChange) {
   [[45,41,48,43],[64,null,null,67,62,null,59,null]]
  ];
  let context, bus, noise, timer, position = 0, scene, heard, story;
+ // Keep music and location beds independent of dialogue advances.
+ const buffers=new Map(), layers=new Map();
+ function layer(slot,file,volume) {
+  const old=layers.get(slot);
+  if (old?.file===file) return;
+  if (old) {
+   layers.delete(slot);
+   if(old.source) {
+    old.gain.gain.setTargetAtTime(0,context.currentTime,0.09);
+    old.source.stop(context.currentTime+0.45);
+   }
+  }
+  if (!file) return;
+  const entry={file};
+  layers.set(slot,entry);
+  if (!buffers.has(file)) buffers.set(file,fetch('assets/audio/'+file+'.wav')
+   .then(response=>{if(!response.ok) throw Error(file); return response.arrayBuffer()})
+   .then(bytes=>context.decodeAudioData(bytes))
+   .catch(error=>{buffers.delete(file);throw error}));
+  buffers.get(file).then(buffer=>{
+   if(layers.get(slot)!==entry) return;
+   const source=context.createBufferSource(), gain=context.createGain();
+   Object.assign(entry,{source,gain});
+   source.buffer=buffer; source.loop=true;
+   gain.gain.value=0;
+   gain.gain.setTargetAtTime(volume,context.currentTime,0.15);
+   source.connect(gain).connect(bus);
+   source.onended=()=>{source.disconnect();gain.disconnect()};
+   source.start();
+  }).catch(()=>{if(layers.get(slot)===entry) layers.delete(slot)});
+ }
  function prepare() {
   const Engine = window.AudioContext || window.webkitAudioContext;
   if (!Engine) return;
@@ -57,6 +88,7 @@ function createReadingAudio(onStateChange) {
   position=(position+1)%32;
  }
  function stop() {
+  layer('music',null); layer('place',null);
   clearInterval(timer); timer=null;
   if (!bus) return;
   const old=bus; bus=null;
@@ -66,10 +98,16 @@ function createReadingAudio(onStateChange) {
  function play(next) {
   scene=next;
   if (!context || !scene || context.state!=='running') return;
-  if (!timer || story!==scene.story) {
+  if (!bus || story!==scene.story) {
    stop(); story=scene.story; position=0;
    bus=context.createGain(); bus.connect(context.destination);
-   tick(); timer=setInterval(tick,story===1?900:1150);
+   if(story!==1) { tick(); timer=setInterval(tick,1150); }
+  }
+  if(story===1) {
+   layer('music','riviera',0.54);
+   const market=scene.bg==='summer-04' || scene.bg==='summer-07';
+   const coast=['summer-03','summer-06','summer-08'].includes(scene.bg);
+   layer('place',market?'mercato':coast?'shore':null,market?0.95:0.35);
   }
   if (heard===scene.key) return;
   heard=scene.key;
