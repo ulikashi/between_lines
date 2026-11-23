@@ -21,23 +21,38 @@ body nav.library-tabs{position:fixed;inset:auto 0 0;z-index:20;display:flex;alig
 .card .cover img { display: block; object-fit: contain; transform: none; }
 .card .cover::after { content: none; }
 .card .card-open:focus-visible { outline: 3px solid #f5d98f; outline-offset: -5px; }
-#story-preview { background: #2b191e; border-color: #806649; border-radius: 8px; }
-.preview-heading {
-  display: grid;
-  grid-template-columns: 42% minmax(0, 1fr);
-  align-items: end;
-  gap: clamp(14px, 4vw, 24px);
-  margin: 24px 20px 0;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #80664980;
+/* The corner engraving scales independently of the portrait. */
+.card .cover::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  z-index: 1;
+  border: clamp(24px, 3vw, 40px) solid transparent;
+  border-image: url("../assets/ornaments/cover-filigree.svg") 44 / 1 / 0 stretch;
+  background: none;
 }
-.preview-heading img { display: block; width: 100%; height: auto; }
-.preview-heading > div { padding-top: 36px; }
-#story-preview h2 { font: 400 clamp(25px, 6.4vw, 36px)/1.06 Georgia, serif; }
-#story-preview .preview-genre, #story-preview .preview-status { color: #d8be96; font-size: 12px; }
-#story-preview .preview-genre { margin: 0 0 9px; }
-#story-preview .preview-status { margin: 12px 0 0; }
-#story-preview section { padding: 16px 20px 20px; }
-#story-preview section p { margin: 0; }
-#story-preview .preview-start { width: 100%; margin-top: 18px; font-size: 14px; background: #682d36; }
-#story-preview .preview-close { top: 3px; right: 3px; border: 0; background: transparent; color: #eddbc2; }
+#story-preview {
+  width: min(92vw, 430px, 57dvh);
+  max-height: 90dvh;
+  border-radius: 7px;
+  background: #211518;
+}
+.preview-heading { position: relative; display: grid; align-items: end; isolation: isolate; }
+.preview-heading img { grid-area: 1/1; align-self: start; display: block; width: 100%; height: auto; }
+.preview-heading > div {
+  grid-area: 1/1;
+  z-index: 1;
+  padding: 42px clamp(15px, 4vw, 25px) 20px;
+  background: linear-gradient(transparent, #170e14e8 40px, #170e14 100%);
+}
+#story-preview h2 { font: 400 clamp(27px, 7.5vw, 40px)/1.04 Georgia, serif; }
+#story-preview .preview-genre, #story-preview .preview-status { color: #e7cba5; font-size: 12px; }
+#story-preview .preview-genre { margin: 0 0 6px; }
+#story-preview .preview-status { margin: 6px 0; }
+#story-preview .preview-description { margin: 0; font-size: 14px; line-height: 1.45; }
+#story-preview .preview-start { width: 100%; margin-top: 14px; font-size: 14px; background: #682d36; }
+#story-preview .preview-close { z-index: 2; background: #23171be6; }
+@media (max-height: 520px) {
+  #story-preview { width: min(88vw, 340px); }
+}

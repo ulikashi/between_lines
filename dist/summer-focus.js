@@ -10,7 +10,7 @@ document.addEventListener('click', event => {
  if (!trigger) return;
  const story = stories[Number(trigger.dataset.preview)];
  const available = story.id === 1;
- preview.innerHTML = `<button class="preview-close" aria-label="Закрыть">×</button><div class="preview-heading"><img src="${imageUrl(story)}" width="1024" height="1536" alt=""><div><p class="preview-genre">${story.tags.join(' · ')}</p><h2 id="preview-title">${story.title}</h2><p class="preview-status">${available ? '4 серии' : 'В разработке'}</p></div></div><section><p>${story.description}</p>${available ? '<button class="primary preview-start"></button>' : ''}</section>`;
+ preview.innerHTML = `<button class="preview-close" aria-label="Закрыть">×</button><div class="preview-heading"><img src="${imageUrl(story)}" width="1024" height="1536" alt=""><div><p class="preview-genre">${story.tags.join(' · ')}</p><h2 id="preview-title">${story.title}</h2><p class="preview-status">${available ? '4 серии' : 'В разработке'}</p><p class="preview-description">${story.description}</p>${available ? '<button class="primary preview-start"></button>' : ''}</div></div>`;
  preview.querySelector('.preview-close').onclick = () => preview.close();
  if (available) {
   const start = preview.querySelector('.preview-start');
