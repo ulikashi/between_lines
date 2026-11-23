@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <path id="edge" d="M0 20V9Q0 4 5 4H9Q13 4 13 8Q13 11 10 11Q8 11 8 9M7 20V17Q7 7 17 7H20" transform="translate(4 0)"/>
+  </defs>
+  <g fill="none" stroke="#702c40" stroke-width="1.35" stroke-linecap="round">
+    <use href="#edge"/>
+    <use href="#edge" transform="translate(64 0) rotate(90)"/>
+    <use href="#edge" transform="translate(64 64) rotate(180)"/>
+    <use href="#edge" transform="translate(0 64) rotate(270)"/>
+    <path d="M20 7h24M57 20v24M44 57H20M7 44V20"/>
+  </g>
+</svg>
