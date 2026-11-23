@@ -50,9 +50,51 @@ const reader=document.querySelector('#reader');
 reader.classList.add('visual-reader');
 reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
 const readingMenu=document.createElement('dialog');readingMenu.id='reading-menu';readingMenu.setAttribute('aria-label','Меню истории');
-readingMenu.innerHTML=`<button id="vn-resume">Продолжить чтение</button><button id="vn-reset">Начать историю заново</button><button id="vn-home">На главный экран</button>`;
+readingMenu.innerHTML = `
+ <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
+ <div class="reading-controls">
+  <h3>Настройки чтения</h3>
+  <label class="reading-option">Шум прибоя <input type="checkbox" id="reading-sound" role="switch"></label>
+  <label class="reading-option">Крупный шрифт <input type="checkbox" id="reading-large" role="switch"></label>
+  <button id="vn-resume" autofocus>Продолжить чтение</button>
+  <div class="reading-links"><button id="vn-home">На главный экран</button><button id="vn-reset">Начать заново</button></div>
+ </div>`;
 document.body.append(readingMenu);
-function openReadingMenu(){if(!readingMenu.open)readingMenu.showModal()}
+const preferences = state.readingPreferences ||= {sound:false, large:false};
+const shore = new Audio('assets/audio/shore.wav');
+shore.preload = 'none';
+shore.loop = true;
+shore.volume = 0.38;
+const soundSwitch = $('#reading-sound');
+const largeSwitch = $('#reading-large');
+soundSwitch.checked = preferences.sound;
+largeSwitch.checked = preferences.large;
+reader.classList.toggle('large-type', preferences.large);
+function syncReadingSound(){
+ if (!preferences.sound || !reader.open || document.hidden) { shore.pause(); return; }
+ shore.play().catch(error => {
+  if(error.name === 'AbortError') return;
+  soundSwitch.checked = preferences.sound = false;
+  save();
+ });
+}
+soundSwitch.onchange = () => { preferences.sound = soundSwitch.checked; save(); syncReadingSound(); };
+largeSwitch.onchange = () => {
+ preferences.large = largeSwitch.checked;
+ reader.classList.toggle('large-type', preferences.large);
+ save();
+};
+new MutationObserver(syncReadingSound).observe(reader,{attributes:true,attributeFilter:['open']});
+document.addEventListener('visibilitychange',syncReadingSound);
+window.addEventListener('pagehide',()=>shore.pause());
+window.addEventListener('pageshow',syncReadingSound);
+function openReadingMenu(){
+ if(readingMenu.open)return;
+ const run=state.runs[active];
+ $('#menu-story').textContent=stories[active].title;
+ $('#menu-episode').textContent=active===1 ? `Серия ${(run.episode||0)+1} · ${currentSummerEpisode().title}` : 'Меню истории';
+ readingMenu.showModal();
+}
 $('#vn-menu-toggle').onclick=openReadingMenu;
 $('#vn-resume').onclick=()=>readingMenu.close();
 $('#vn-reset').onclick=()=>{restart();readingMenu.close()};

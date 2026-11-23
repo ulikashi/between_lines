@@ -65,3 +65,33 @@
 .finale-letter{position:relative;border-radius:48% 48% 36px 36px / 90px 90px 36px 36px;padding:65px 30px 38px;background:radial-gradient(ellipse,#fff2d6b0 35%,#fff2d65c 75%,#fff2d600);outline:1px solid #a69a7066;outline-offset:-9px}
 .finale-letter:before{content:'❧';display:block;color:#6b7957;font:32px Georgia;margin:-30px auto 18px;text-align:center}
 @media(max-width:700px){.finale-letter{padding:57px 14px 28px;border-radius:48% 48% 28px 28px / 65px 65px 28px 28px}.finale-postcard{padding:65px 22px}.finale-letter h2{font-size:34px}}
+
+#reading-menu {
+  width: min(370px, 92vw);
+  max-height: 90dvh;
+  overflow: auto;
+  padding: 0 !important;
+  border: 1px solid #a39373 !important;
+  border-radius: 12px !important;
+  background: #f6eedc !important;
+}
+#reading-menu .reading-cover {
+  display: block; position: relative; height: auto; min-height: 0; margin: 0;
+  padding: 42px 22px 18px; border: 0;
+  background: linear-gradient(0deg,#152523f5,#162b2da6),url('../assets/summer.png') center 28%/cover;
+  color: #fff1d2;
+}
+.reading-cover span { font: 13px Georgia,serif; letter-spacing: .05em; }
+#reading-menu .reading-cover h2 { margin: 5px 0 0; color: #fff1d2 !important; font: 27px/1.15 Georgia,serif; }
+.reading-controls { padding: 18px 22px 8px; }
+.reading-controls h3 { font: 20px Georgia,serif; color: #30463d; margin: 0 0 9px; }
+#reading-menu .reading-option { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d6cbb4; color: #35463d !important; font-size: 15px; cursor: pointer; }
+.reading-option input { appearance: none; width: 41px; height: 24px; margin: 0; border: 1px solid #938a76; border-radius: 20px; background: #ddd5c4; cursor: pointer; }
+.reading-option input::before { content: ''; display: block; margin: 3px; width: 16px; height: 16px; background: #fffaf0; border-radius: 50%; box-shadow: 0 1px 3px #302a244d; }
+.reading-option input:checked { background: #365a4c; }
+.reading-option input:checked::before { transform: translateX(17px); }
+#reading-menu #vn-resume { margin: 16px 0 2px; text-align: center; border-radius: 5px; background: #334f43; color: #fff3d6 !important; }
+.reading-links { display: flex; }
+#reading-menu .reading-links button { flex: 1; padding: 8px 2px; text-align: center; font-size: 12px; border: 0; color: #5d4d40 !important; }
+#reader.large-type #story-text { font-size: 1.45rem; line-height: 1.58; }
+#reader.large-type #choices button { font-size: 1.12rem; }
