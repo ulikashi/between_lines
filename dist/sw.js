@@ -1,5 +1,5 @@
-const CACHE='between-lines-09476868768ee3f6';
-const FILES=["./", "./index.html", "./build/site-819ef80e3364905b.js", "./build/site-8aac88296a31036e.css", "./assets/city.png", "./assets/moon.png", "./assets/summer.png", "./assets/salon.png"];
+const CACHE='between-lines-61ba56c155494429';
+const FILES=["./", "./index.html", "./build/site-c686b78904bc3e0d.js", "./build/site-f5320e88b267bb99.css", "./assets/city.png", "./assets/moon.png", "./assets/summer.png", "./assets/salon.png"];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  // Do not populate a new release from the browser's old HTTP cache.
