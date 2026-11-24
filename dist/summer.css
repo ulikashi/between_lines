@@ -173,6 +173,26 @@
 #vn-wardrobe{right:calc(max(12px,env(safe-area-inset-right)) + 54px)}
 #close-wardrobe{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;background:transparent;color:inherit;font-size:26px;cursor:pointer}
 
-.relationship-notice{position:absolute;z-index:9;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);box-sizing:border-box;width:max-content;max-width:calc(100% - 224px);padding:9px 16px;text-align:center;border-radius:12px;border:1px solid #cfb77b;background:#fff6e6;color:#382e29;font:normal 17px/1.25 Georgia,serif;box-shadow:0 3px 14px #18212a33;pointer-events:none}
+.summer-story #story-text{min-block-size:2lh;align-content:center}
+
+.relationship-notice{
+ --notice-top:#476978;--notice-base:#263f50;
+ position:absolute;z-index:9;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+ box-sizing:border-box;width:min(470px,calc(100% - 240px));padding:12px 29px;
+ text-align:center;text-wrap:balance;color:#fff2cf;font:500 17px/1.3 Georgia,serif;
+ background:linear-gradient(155deg,var(--notice-top),var(--notice-base) 80%);
+ border:3px double #cfbb89;border-radius:14px 4px;
+ box-shadow:inset 0 0 0 3px var(--notice-base),inset 0 0 0 4px #c8b48799,0 3px 8px #18252b66;
+ pointer-events:none
+}
+.relationship-notice[data-change="loss"]{--notice-top:#68565c;--notice-base:#463b47}
+.relationship-notice:before,.relationship-notice:after{
+ content:"❦" / "";position:absolute;top:50%;transform:translateY(-50%);left:8px;
+ color:#d5bf8b;font:18px Georgia,serif
+}
+.relationship-notice:after{left:auto;right:8px;transform:translateY(-50%) scaleX(-1)}
 .relationship-notice:empty{display:none}
-@media(max-width:600px){.relationship-notice{left:8px;transform:none;max-width:calc(100% - 126px);font-size:15px;padding:7px 10px}}
+@media(max-width:600px){
+ .relationship-notice{left:max(5px,env(safe-area-inset-left));transform:none;width:calc(100% - max(5px,env(safe-area-inset-left)) - max(115px,calc(env(safe-area-inset-right) + 110px)));padding:9px 21px;font-size:15px}
+ .relationship-notice:before{left:5px}.relationship-notice:after{right:5px}
+}

@@ -79,7 +79,7 @@ function displayFitting(){
  fittingRoom.querySelectorAll('[data-turn]').forEach(button=>button.disabled=entry.outfits.length===1);
  $('#look-name').textContent=name;
  $('#look-description').textContent=description;
- $('#look-terms').textContent=browsingWardrobe ? (id===summerFigure('summer-heroine',state.runs[1])?'Сейчас на героине':'Доступно') : fittingIndex ? 'Будущая цена · '+wardrobePrices[fittingIndex]+' монет  ·  +'+fittingIndex+' к опоре на себя' : 'Бесплатно';
+ $('#look-terms').textContent=browsingWardrobe ? (id===summerFigure('summer-heroine',state.runs[1])?'Сейчас на героине':'Доступно') : fittingIndex ? 'Будущая цена · '+wardrobePrices[fittingIndex]+' монет' : 'Бесплатно';
 }
 function turnLook(delta){const count=fittingEntry().outfits.length;fittingIndex=(fittingIndex+delta+count)%count;displayFitting()}
 fittingRoom.querySelectorAll('[data-turn]').forEach(button=>button.onclick=()=>turnLook(Number(button.dataset.turn)));
@@ -111,7 +111,6 @@ function wearLook(){
  run.outfits[run.step]=fittingIndex;
  run.equippedLook=selectedLook(run,run.step)[0];
  if(!state.summerOwnedLooks.includes(run.equippedLook))state.summerOwnedLooks.push(run.equippedLook);
- run.boundary=(run.boundary||0)+fittingIndex;
  save();fittingRoom.close();showScene();
 }
 $('#wear-look').onclick=wearLook;

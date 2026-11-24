@@ -90,6 +90,7 @@ function clearRelationshipNotice(){
 function showRelationshipNotice(person,delta){
  clearRelationshipNotice();
  const names={sasha:'Сашей',kirill:'Кириллом',marta:'Мартой'};
+ relationshipNotice.dataset.change=delta>0?'gain':'loss';
  relationshipNotice.textContent='Ваши отношения с '+names[person]+(delta>0?' улучшились':' ухудшились');
  relationshipTimer=setTimeout(clearRelationshipNotice,3600);
 }

@@ -246,3 +246,34 @@ readingFrames[1][9] = [
 extendSummerScene(11, [], [
  N('Билет приходит на почту, пока ты ищешь вторую серьгу. Место в первом ряду. У двери ты меняешь босоножки на те сандалии, в которых дошла сюда от станции. До кинотеатра пятнадцать минут пешком, и все пятнадцать тебе сейчас нужны.')
 ]);
+
+
+// Keep the original save keys so previous episodes retain their character progression.
+function leadingSummerTrait(run){
+ const scores=summerStatKeys.map(key=>run[key]||0);
+ const highest=Math.max(...scores);
+ const tied=summerStatKeys.filter(key=>(run[key]||0)===highest);
+ for(let step=run.step-1;tied.length>1 && step>=0;step--){
+  const key=stories[1].scenes[step][2][run.decisions?.[step]]?.[1];
+  if(tied.includes(key))return key;
+ }
+ return tied[0];
+}
+const characterDecisions={
+ 9:{
+  trust:'Ты отодвигаешь бумаги и ставишь Саше тарелку. Он весь день на ногах. Разговор подождёт, пока он поест.',
+  truth:'Ты возвращаешь пропуск Саше. «Я всё ещё злюсь на тебя за вчерашнее. Хочу, чтобы ты это знал, прежде чем мы куда-то пойдём вместе».',
+  boundary:'Ты фотографируешь название кинотеатра на пропуске и сама звонишь в кассу узнать, остались ли места.'
+ },
+ 24:{
+  trust:'Ты пишешь Марте заранее. «Когда тебе удобно созвониться? Помню, по вечерам ты укладываешь сына». Вопросы пока остаются на листке.',
+  truth:'Ты отправляешь Марте короткое сообщение. «Я нашла письмо со своего старого адреса. Пытаюсь понять, кто его отправил». Теперь она знает, о чём ты хочешь спросить.',
+  boundary:'Ты записываешь на отдельном листке адрес архива. Если Марта не сможет поговорить, утром ты сама запросишь журнал писем.'
+ }
+};
+const scenesBeforeCharacterDecisions=summerSceneFrames;
+summerSceneFrames=function(run){
+ const frames=scenesBeforeCharacterDecisions(run);
+ const options=characterDecisions[run.step];
+ return options ? [...frames,N(options[leadingSummerTrait(run)])] : frames;
+};
