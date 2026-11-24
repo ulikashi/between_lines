@@ -96,7 +96,7 @@ function createReadingAudio(onStateChange) {
   old.gain.setTargetAtTime(0,context.currentTime,0.025);
   setTimeout(()=>old.disconnect(),160);
  }
- function play(next,musicEnabled,effectsEnabled) {
+ function play(next,musicLevel,effectsLevel) {
   scene=next;
   if (!context || !scene || context.state!=='running') return;
   if (!bus || story!==scene.story) {
@@ -104,14 +104,14 @@ function createReadingAudio(onStateChange) {
    bus=context.createGain(); bus.connect(context.destination);
    musicChannel=context.createGain(); musicChannel.connect(bus);
    effectsChannel=context.createGain(); effectsChannel.connect(bus);
-   musicChannel.gain.value=Number(musicEnabled);
-   effectsChannel.gain.value=Number(effectsEnabled);
+   musicChannel.gain.value=musicLevel;
+   effectsChannel.gain.value=effectsLevel;
    if(story!==1) { tick(); timer=setInterval(tick,1150); }
   }
-  musicChannel.gain.setTargetAtTime(Number(musicEnabled),context.currentTime,0.012);
-  effectsChannel.gain.setTargetAtTime(Number(effectsEnabled),context.currentTime,0.012);
+  musicChannel.gain.setTargetAtTime(musicLevel,context.currentTime,0.012);
+  effectsChannel.gain.setTargetAtTime(effectsLevel,context.currentTime,0.012);
   if(story===1) {
-   layer('music','riviera',0.045);
+   layer('music','riviera',0.32);
    const market=scene.bg==='summer-04' || scene.bg==='summer-07';
    const coast=['summer-03','summer-06','summer-08'].includes(scene.bg);
    layer('place',market?'mercato':coast?'shore':null,market?1.5:1.7);

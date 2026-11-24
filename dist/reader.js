@@ -54,8 +54,8 @@ readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
  <div class="reading-controls">
   <h3>Настройки чтения</h3>
-  <label class="reading-option">Звуки истории <input type="checkbox" id="reading-sound" role="switch"></label>
-  <label class="reading-option">Музыка <input type="checkbox" id="reading-music" role="switch"></label>
+  <label class="reading-option"><span>Звуки истории</span><input type="range" id="reading-sound" min="0" max="100" aria-label="Звуки истории"><span id="sound-percent" aria-hidden="true"></span></label>
+  <label class="reading-option"><span>Музыка</span><input type="range" id="reading-music" min="0" max="100" aria-label="Музыка"><span id="music-percent" aria-hidden="true"></span></label>
   <label class="reading-option">Крупный шрифт <input type="checkbox" id="reading-large" role="switch"></label>
   <button id="vn-resume" autofocus>Продолжить чтение</button>
   <div class="reading-links"><button id="vn-home">На главный экран</button><button id="vn-reset">Начать заново</button></div>
@@ -64,32 +64,41 @@ document.body.append(readingMenu);
 const preferences = state.readingPreferences ||= {sound:true, large:false};
 const soundtrack = createReadingAudio(syncReadingSound);
 let audioScene;
-const soundSwitch = $('#reading-sound');
 const largeSwitch = $('#reading-large');
-const musicSwitch = $('#reading-music');
-preferences.music ??= preferences.sound;
-soundSwitch.checked = preferences.sound;
-musicSwitch.checked = preferences.music;
+function bindVolume(id, fallback) {
+ const slider = $('#reading-' + id);
+ const valueLabel = $('#' + id + '-percent');
+ const key = id + 'Volume';
+ if (!Number.isFinite(preferences[key])) preferences[key] = fallback;
+ slider.value = preferences[key];
+ function update() {
+  preferences[key] = slider.valueAsNumber;
+  valueLabel.textContent = slider.value + '%';
+  slider.setAttribute('aria-valuetext', valueLabel.textContent);
+ }
+ update();
+ slider.oninput = () => {
+  update();
+  save();
+  if (preferences.musicVolume || preferences.soundVolume) unlockReadingSound();
+  else syncReadingSound();
+ };
+}
+bindVolume('sound', preferences.sound === false ? 0 : 30);
+bindVolume('music', (preferences.music ?? preferences.sound) === false ? 0 : 20);
 largeSwitch.checked = preferences.large;
 reader.classList.toggle('large-type', preferences.large);
 function syncReadingSound(){
- if ((!preferences.music && !preferences.sound) || !reader.open || document.hidden) { soundtrack.stop(); return; }
- soundtrack.play(audioScene, preferences.music, preferences.sound);
+ if ((!preferences.musicVolume && !preferences.soundVolume) || !reader.open || document.hidden) { soundtrack.stop(); return; }
+ soundtrack.play(audioScene, preferences.musicVolume / 100, preferences.soundVolume / 100);
 }
 function unlockReadingSound(){
- if ((!preferences.music && !preferences.sound) || !reader.open) return;
+ if ((!preferences.musicVolume && !preferences.soundVolume) || !reader.open) return;
  soundtrack.prepare();
  syncReadingSound();
 }
 document.addEventListener('click',unlockReadingSound);
 document.addEventListener('keyup',unlockReadingSound);
-soundSwitch.onchange = musicSwitch.onchange = () => {
- preferences.sound = soundSwitch.checked;
- preferences.music = musicSwitch.checked;
- save();
- if (preferences.music || preferences.sound) unlockReadingSound();
- else syncReadingSound();
-};
 largeSwitch.onchange = () => {
  preferences.large = largeSwitch.checked;
  reader.classList.toggle('large-type', preferences.large);
