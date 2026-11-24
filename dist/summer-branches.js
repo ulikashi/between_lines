@@ -29,3 +29,42 @@ function summerSceneFrames(run){const base=readingFrames[1][run.step],d=run.deci
  return [...extra.flatMap(([text,speaker])=>compactFrame({text,...(speaker?{speaker}: {})})),...base];}
 
 readingFrames[1][3]=readingFrames[1][3].filter(f=>!f.text.startsWith('Саша оказывается фотографом.')&&!f.text.startsWith('Это выясняется само собой:'));
+
+// Each entry names the person affected by a particular dialogue branch.
+const dialogueRelationships={
+ 1:[null,['sasha',2]], 2:[null,['sasha',2]], 3:[null,['sasha',2]],
+ 6:[['sasha',2],null], 10:[null,['sasha',2]], 11:[null,['sasha',2]],
+ 15:[null,['kirill',-2]], 16:[['sasha',2],null],
+ 25:[null,['marta',2]], 29:[['marta',2],null]
+};
+function applySceneRelationship(run,frame){
+ let effect;
+ let source;
+ if(frame.seenLook){
+  run.seenLooks??={};
+  if(run.seenLooks[run.step])return;
+  run.seenLooks[run.step]=frame.seenLook;
+  if(['couture','coral'].includes(frame.seenLook))effect=['sasha',1];
+  source='outfit';
+ }else if(run.pendingChoice && run.beat===0){
+  effect=dialogueRelationships[run.step]?.[run.decisions[run.step]];
+  source='dialogue';
+ }
+ if(!effect)return;
+ const key=run.step+'-'+source;
+ run.relationshipEvents??={};
+ if(run.relationshipEvents[key])return;
+ const [person,delta]=effect;
+ run.relationshipEvents[key]={person,delta};
+ run.relationships??={};
+ run.relationships[person]=(run.relationships[person]||0)+delta;
+ showRelationshipNotice(person,delta);
+}
+function rewindRelationships(run,start){
+ for(const [key,{person,delta}] of Object.entries(run.relationshipEvents||{})){
+  if(parseInt(key,10)<start)continue;
+  run.relationships[person]-=delta;
+  delete run.relationshipEvents[key];
+ }
+ for(const step of Object.keys(run.seenLooks||{}))if(Number(step)>=start)delete run.seenLooks[step];
+}

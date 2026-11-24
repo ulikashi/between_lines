@@ -11,4 +11,4 @@ listeners.pointerdown({clientX:0,clientY:0});listeners.pointermove({clientX:0,cl
 listeners.pointerdown({clientX:0,clientY:0});tap();assert.equal(ctx.state.runs[0].beat,2);tap();assert.equal(ctx.state.runs[0].beat,2);assert.equal(ctx.state.runs[0].step,0);assert.equal(ctx.state.runs[0].trust,2);
 ctx.state.runs[0].beat=0;listeners.keydown({target,key:' ',preventDefault(){}});assert.equal(ctx.state.runs[0].beat,1);
 const markup=source.split('reader.innerHTML=`')[1].split('`;')[0];for(const id of ['vn-position','vn-next','vn-back','stats','bar','scene-title','chapter-label','reader-title','vn-delivery'])assert(!markup.includes('id="'+id+'"'));
-assert(source.includes("$('.vn-speaker').hidden=!c"));console.log('PASS: tap/keyboard navigation, menu blocking, no accidental choice or drag advance, hidden stats, no counters/headings, narrator label hidden');
+assert(source.includes("$('.vn-speaker').hidden=!c||!frame.speaker"));console.log('PASS: tap/keyboard navigation, menu blocking, no accidental choice or drag advance, hidden stats, no counters/headings, narrator label hidden');

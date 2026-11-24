@@ -49,6 +49,51 @@ for(const [id,run] of Object.entries(state.runs)){
 const reader=document.querySelector('#reader');
 reader.classList.add('visual-reader');
 reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
+// A cue names the exact reading card, including cards introduced by a choice.
+const summerProps = [
+ ['portrait', 'Плёночный отпечаток Саши со смеющейся женщиной', ['контактные отпечатки', 'берёшь снимок только после']],
+ ['manuscript', 'Первые страницы романа с пометкой подруги', ['Внутри распечатка первых страниц', 'На полях её почерк']],
+ ['market', 'Героиня смеётся на рынке', ['На снимке ты не стараешься', 'открываешь фотографию с рынка']],
+ ['vendor', 'Продавщица с лишним лимоном', ['показывает снимок продавщицы']],
+ ['poster', 'Афиша фильма «Комната для моря»', ['Под фотографией название нового фильма']],
+ ['pass', 'Пропуск Саши на показ', ['Он кладёт на стол пропуск']],
+ ['ticket', 'Билет на премьеру в первый ряд', ['Билет приходит на почту']],
+ ['contract', 'Договор уступки прав с подписью', ['На первой странице договор уступки прав', 'Ты придвигаешь папку к лампе', 'Елена прислала копию документа']],
+ ['notebook', 'Страница блокнота Марты с кофейным следом', ['присылает снимок страницы из своего блокнота']]
+];
+const storyProp = document.createElement('img');
+storyProp.className = 'story-prop';
+storyProp.hidden = true;
+reader.querySelector('.vn-dialogue').before(storyProp);
+
+function showStoryProp(text) {
+ const prop = summerProps.find(([, , cues]) => cues.some(cue => text.includes(cue)));
+ storyProp.hidden = !prop;
+ storyProp.parentElement.classList.toggle('has-prop', Boolean(prop));
+ if (!prop) return;
+ const [id, description] = prop;
+ storyProp.alt = description;
+ if (storyProp.dataset.id !== id) {
+  storyProp.dataset.id = id;
+  storyProp.src = 'assets/story-props/' + id + '.webp';
+ }
+}
+const relationshipNotice=document.createElement('div');
+relationshipNotice.className='relationship-notice';
+relationshipNotice.setAttribute('role','status');
+reader.append(relationshipNotice);
+let relationshipTimer;
+function clearRelationshipNotice(){
+ clearTimeout(relationshipTimer);
+ relationshipNotice.textContent='';
+}
+function showRelationshipNotice(person,delta){
+ clearRelationshipNotice();
+ const names={sasha:'Сашей',kirill:'Кириллом',marta:'Мартой'};
+ relationshipNotice.textContent='Ваши отношения с '+names[person]+(delta>0?' улучшились':' ухудшились');
+ relationshipTimer=setTimeout(clearRelationshipNotice,3600);
+}
+reader.addEventListener('close',clearRelationshipNotice);
 const readingMenu=document.createElement('dialog');readingMenu.id='reading-menu';readingMenu.setAttribute('aria-label','Меню истории');
 readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
@@ -138,18 +183,29 @@ function renderReadingScene(){
  $('.vn-stage').style.backgroundImage=`url("${imageUrl(story)}")`;
  const frames=active===1&&run.pendingChoice?summerBranchFrames(run):active===1&&!finished?summerSceneFrames(run):readingFrames[active][sceneIndex];run.beat=finished?0:Math.max(0,Math.min(Number.isInteger(run.beat)?run.beat:0,frames.length-1));
  const frame=finished?{text:'Продолжение следует.'}:frames[run.beat];
+ if(active===1&&!finished)applySceneRelationship(run,frame);
+ if(active===1&&!finished)offerFitting(run,frame);
  audioScene=finished?null:{story:active,bg:bg.id,text:frame.text,key:[active,run.step,run.pendingChoice,run.beat].join('/')};
  if (finished) soundtrack.stop(); else syncReadingSound();
- const c=visualAssets.characters.find(c=>c.id===frame.speaker),portrait=$('#vn-character');
+ const c=visualAssets.characters.find(c=>c.id===(frame.figure||frame.speaker)),portrait=$('#vn-character');
  const request=++characterRequest;
  $('.vn-stage').classList.toggle('has-speaker',!!c);
+ $('.vn-stage').classList.toggle('heroine-on-left',c?.id==='summer-heroine');
  if(!c){portraitKey='';portrait.classList.remove('is-visible');portrait.hidden=true;portrait.dataset.speaker='';}
  if(c){const costume=frame.costume||direction.costumes?.[c.id];const v=c.variants.find(v=>v.id===costume)||c.variants[0];const emotion=visualAssets.emotions.find(e=>e.id===frame.emotion)||visualAssets.emotions[0];
-  const nextKey=c.id+':'+v.file+':'+emotion.cell;
+  const full=active===1;
+  const file=full?figureFile(summerFigure(c.id,run)):v.file;
+  const nextKey=full?file:c.id+':'+v.file+':'+emotion.cell;
   const changed=portraitKey!==nextKey;if(changed)portrait.classList.remove('is-visible');
-  const img=new Image();img.onload=()=>{if(request!==characterRequest)return;atlas(portrait,v.file,emotion.cell);portrait.style.aspectRatio=`${v.width}/${v.height}`;portrait.setAttribute('aria-label',`${characterName(c)}: ${emotion.label}`);portrait.dataset.speaker=c.id;portrait.dataset.emotion=emotion.id;portrait.hidden=false;portraitKey=nextKey;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(request===characterRequest)portrait.classList.add('is-visible')}));};img.src=v.file;
+  const img=new Image();img.onload=()=>{if(request!==characterRequest)return;if(full){
+    img.className='reading-figure';img.alt='';portrait.replaceChildren(img);
+    portrait.style.backgroundImage='none';portrait.style.aspectRatio='auto';
+   }else{
+    portrait.replaceChildren();atlas(portrait,file,emotion.cell);portrait.style.aspectRatio=`${v.width}/${v.height}`;
+   }portrait.setAttribute('aria-label',`${characterName(c)}: ${emotion.label}`);portrait.dataset.speaker=c.id;portrait.dataset.emotion=emotion.id;portrait.hidden=false;portraitKey=nextKey;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(request===characterRequest)portrait.classList.add('is-visible')}));};img.src=file;
  }
- $('.vn-speaker').hidden=!c;$('#vn-name').textContent=c?characterName(c):'';
+ $('.vn-speaker').hidden=!c||!frame.speaker;$('#vn-name').textContent=c?characterName(c):'';
+ showStoryProp(active === 1 && !finished ? frame.text : '');
  $('#story-text').textContent=personalizedText(frame.text);$('#vn-live').scrollTop=0;
  const last=run.beat===frames.length-1;
  $('#choices').replaceChildren();

@@ -6,7 +6,7 @@
 .summer-story #story-text{font:500 23px/1.45 'Cormorant Garamond',Georgia,serif;color:#203f54;text-shadow:0 1px #fff2c755}
 .summer-story #vn-name{font:600 23px/1.15 'Cormorant Garamond',Georgia,serif;color:#244f80}
 .summer-story #choices{gap:9px;margin-top:18px}.summer-story #choices button{border:1px solid #315c8c99;border-left:4px solid #315c8c;border-radius:2px;background:#fff0be88;color:#193d62;font-size:14px;line-height:1.45;padding:11px 13px;box-shadow:0 2px 0 #b3913522;transition:background .2s,transform .2s}.summer-story #choices button:hover{background:#f8d872;transform:translateX(2px)}.summer-story #choices button:focus-visible{outline:2px solid #193d62;outline-offset:3px}
-.summer-story #vn-menu-toggle{background:#173e70d9;border:1px solid #e5c25f;color:#ffe49a;box-shadow:0 0 0 3px #173e7044}
+.summer-story #vn-menu-toggle,.summer-story #vn-wardrobe{background:#173e70d9;border:1px solid #e5c25f;color:#ffe49a;box-shadow:0 0 0 3px #173e7044}
 .summer-menu{background:#f5df9c url('../assets/ornaments/maiolica-border.svg') top/240px 40px repeat-x!important;border:2px solid #264f7d!important;border-radius:3px 3px 16px 3px!important;color:#193f60!important;padding-top:52px!important}.summer-menu button,.summer-menu p,.summer-menu h2,.summer-menu label{color:#244f80!important}.summer-menu .name-start{background:#244f80!important;color:#ffe6a1!important}.summer-menu input{border-color:#315c8c!important;color:#244f80!important}
 /* The ending is a full scenic postcard, not a white modal. */
 #summer-finale{box-sizing:border-box;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow:auto;color:#163e66;background:#e1be64 url('../assets/ornaments/maiolica.svg') center/160px;scrollbar-color:#d8b052 #173e70}
@@ -97,3 +97,82 @@
 #reading-menu .reading-links button { flex: 1; padding: 8px 2px; text-align: center; font-size: 12px; border: 0; color: #5d4d40 !important; }
 #reader.large-type #story-text { font-size: 1.45rem; line-height: 1.58; }
 #reader.large-type #choices button { font-size: 1.12rem; }
+
+.summer-story .vn-stage.has-prop {
+ display:grid;
+ grid-template-rows:minmax(0,1fr) auto;
+ justify-items:center;
+ align-items:center;
+ box-sizing:border-box;
+ gap:12px;
+ padding:54px 16px max(24px,env(safe-area-inset-bottom));
+}
+.story-prop:not([hidden]) {
+ position:relative;
+ z-index:2;
+ width:min(76vw,490px);
+ height:100%;
+ max-height:48dvh;
+ object-fit:contain;
+ align-self:end;
+ pointer-events:none;
+ filter:drop-shadow(0 9px 14px #21190766);
+ animation:story-prop-in .32s ease-out both;
+}
+.summer-story .vn-stage.has-prop .vn-dialogue {
+ position:relative;
+ inset:auto;
+ transform:none;
+ margin:0;
+ width:min(460px,100%);
+ box-sizing:border-box;
+}
+.summer-story .has-prop .vn-dialogue-content {max-height:38dvh}
+.view-scenery .story-prop {visibility:hidden}
+@keyframes story-prop-in {from{opacity:0;transform:translateY(9px) rotate(-1deg)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.story-prop:not([hidden]){animation:none}}
+.summer-story .vn-stage.has-speaker{
+ --figure-edge:clamp(0px,2vw,28px);
+ --figure-height:116dvh;
+ --reply-offset:min(25vw,33dvh);
+}
+.summer-story .vn-stage.has-speaker #vn-character{
+ position:absolute;inset:12dvh var(--figure-edge) auto auto;width:max-content;height:var(--figure-height);
+ max-width:none;max-height:none;mask-image:none;transform:none
+}
+.summer-story .vn-stage.heroine-on-left #vn-character{right:auto;left:var(--figure-edge)}
+.summer-story .reading-figure{display:block;height:100%;width:auto;max-width:none}
+.summer-story .vn-stage.has-speaker:not(.has-prop) .vn-dialogue{
+ position:absolute;inset:max(44dvh,calc(32dvh + 56px)) var(--reply-offset) auto auto;transform:none;
+ width:fit-content;min-width:min(285px,65vw);max-width:min(425px,calc(100vw - var(--reply-offset) - 12px));box-sizing:border-box;
+ padding:17px 20px 14px;z-index:2;transition:none
+}
+.summer-story .vn-stage.heroine-on-left:not(.has-prop) .vn-dialogue{left:var(--reply-offset);right:auto}
+.summer-story .has-speaker .vn-speaker:not([hidden]){margin-bottom:8px;padding:4px 13px}
+.summer-story .has-speaker .vn-dialogue-content{max-height:min(45dvh,calc(68dvh - 108px));overflow:auto}
+@media(max-width:700px) and (orientation:portrait){
+ .summer-story .vn-stage.has-speaker{--figure-edge:24vw;--reply-offset:clamp(14px,22vw,100px)}
+ .summer-story .vn-stage.has-speaker #vn-character{transform:translateX(50%)}
+ .summer-story .vn-stage.heroine-on-left #vn-character{transform:translateX(-50%)}
+ .summer-story .vn-stage.has-speaker:not(.has-prop) .vn-dialogue{padding:14px 16px 12px}
+}
+#fitting-room{padding:0;background:radial-gradient(ellipse at 50% 42%,#fff4d9,#e3d3ba 64%,#b5ac99);color:#332d29;border:1px solid #a18a63;border-radius:20px;width:min(550px,96vw);max-height:96dvh;box-shadow:0 16px 65px #17130ebb}
+#fitting-room::backdrop{background:#181924a6;backdrop-filter:blur(5px)}
+#fitting-room section{display:grid;grid-template-rows:auto minmax(80px,1fr) auto auto;gap:6px;padding:16px clamp(12px,4vw,34px);height:min(840px,90dvh);box-sizing:border-box;text-align:center}
+#fitting-room h2,#fitting-room h3{margin:0;font:normal clamp(21px,3.3dvh,34px) Georgia,serif}
+.fitting-mirror{min-height:0;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;border-block:1px solid #a18a634a}
+#fitting-figure{height:100%;width:100%;min-height:0;object-fit:contain;filter:drop-shadow(0 4px 6px #43342233)}
+.fitting-mirror button{width:42px;height:42px;padding:0;border-radius:50%;font:28px Georgia;color:#fff;background:#354f50;border:1px solid #d4c5a0}
+.fitting-details p{margin:3px 0;line-height:1.3}
+#fitting-tier,#look-terms{color:#56463a;font-size:13px}
+#wear-look{justify-self:center;min-width:150px;border:1px solid #97815f;border-radius:30px;background:#304b4d;color:#fff;padding:10px 26px}
+@media(max-height:500px) and (orientation:landscape){#fitting-room{width:min(760px,96vw)}#fitting-room section{grid-template-columns:1fr 1fr;grid-template-rows:1fr auto 1fr;align-items:center}.fitting-mirror{grid-column:1;grid-row:1/4;height:100%}#fitting-room h2,.fitting-details,#wear-look{grid-column:2}}
+
+.fitting-mirror{touch-action:pan-y;user-select:none}
+
+#vn-wardrobe{right:calc(max(12px,env(safe-area-inset-right)) + 54px)}
+#close-wardrobe{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;background:transparent;color:inherit;font-size:26px;cursor:pointer}
+
+.relationship-notice{position:absolute;z-index:9;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);box-sizing:border-box;width:max-content;max-width:calc(100% - 224px);padding:9px 16px;text-align:center;border-radius:12px;border:1px solid #cfb77b;background:#fff6e6;color:#382e29;font:normal 17px/1.25 Georgia,serif;box-shadow:0 3px 14px #18212a33;pointer-events:none}
+.relationship-notice:empty{display:none}
+@media(max-width:600px){.relationship-notice{left:8px;transform:none;max-width:calc(100% - 126px);font-size:15px;padding:7px 10px}}
