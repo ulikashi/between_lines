@@ -104,10 +104,10 @@ function createReadingAudio(onStateChange) {
    if(story!==1) { tick(); timer=setInterval(tick,1150); }
   }
   if(story===1) {
-   layer('music','riviera',0.54);
+   layer('music','riviera',0.045);
    const market=scene.bg==='summer-04' || scene.bg==='summer-07';
    const coast=['summer-03','summer-06','summer-08'].includes(scene.bg);
-   layer('place',market?'mercato':coast?'shore':null,market?0.95:0.35);
+   layer('place',market?'mercato':coast?'shore':null,market?1.5:1.7);
   }
   if (heard===scene.key) return;
   heard=scene.key;
