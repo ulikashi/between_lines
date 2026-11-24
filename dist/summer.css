@@ -86,9 +86,8 @@
 .reading-controls { padding: 18px 22px 8px; }
 .reading-controls h3 { font: 20px Georgia,serif; color: #30463d; margin: 0 0 9px; }
 #reading-menu .reading-option { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d6cbb4; color: #35463d !important; font-size: 15px; cursor: pointer; }
-#reading-menu .reading-option:has(input[type="range"]) { display:grid; grid-template-columns: 1fr minmax(65px, 38%) 4ch; gap:8px; }
+#reading-menu .reading-option:has(input[type="range"]) { display:grid; grid-template-columns: 1fr minmax(65px, 45%); gap:8px; }
 .reading-option input[type="range"] { width:100%; margin:0; accent-color:#365a4c; cursor:pointer; }
-.reading-option span:last-child { text-align:right; font-variant-numeric:tabular-nums; }
 .reading-option input[type="checkbox"] { appearance: none; width: 41px; height: 24px; margin: 0; border: 1px solid #938a76; border-radius: 20px; background: #ddd5c4; cursor: pointer; }
 .reading-option input[type="checkbox"]::before { content: ''; display: block; margin: 3px; width: 16px; height: 16px; background: #fffaf0; border-radius: 50%; box-shadow: 0 1px 3px #302a244d; }
 .reading-option input[type="checkbox"]:checked { background: #365a4c; }

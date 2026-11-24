@@ -54,8 +54,8 @@ readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
  <div class="reading-controls">
   <h3>Настройки чтения</h3>
-  <label class="reading-option"><span>Звуки истории</span><input type="range" id="reading-sound" min="0" max="100" aria-label="Звуки истории"><span id="sound-percent" aria-hidden="true"></span></label>
-  <label class="reading-option"><span>Музыка</span><input type="range" id="reading-music" min="0" max="100" aria-label="Музыка"><span id="music-percent" aria-hidden="true"></span></label>
+  <label class="reading-option"><span>Звуки истории</span><input type="range" id="reading-sound" min="0" max="100" aria-label="Звуки истории"></label>
+  <label class="reading-option"><span>Музыка</span><input type="range" id="reading-music" min="0" max="100" aria-label="Музыка"></label>
   <label class="reading-option">Крупный шрифт <input type="checkbox" id="reading-large" role="switch"></label>
   <button id="vn-resume" autofocus>Продолжить чтение</button>
   <div class="reading-links"><button id="vn-home">На главный экран</button><button id="vn-reset">Начать заново</button></div>
@@ -67,14 +67,12 @@ let audioScene;
 const largeSwitch = $('#reading-large');
 function bindVolume(id, fallback) {
  const slider = $('#reading-' + id);
- const valueLabel = $('#' + id + '-percent');
  const key = id + 'Volume';
  if (!Number.isFinite(preferences[key])) preferences[key] = fallback;
  slider.value = preferences[key];
  function update() {
   preferences[key] = slider.valueAsNumber;
-  valueLabel.textContent = slider.value + '%';
-  slider.setAttribute('aria-valuetext', valueLabel.textContent);
+  slider.setAttribute('aria-valuetext', slider.value + '%');
  }
  update();
  slider.oninput = () => {
