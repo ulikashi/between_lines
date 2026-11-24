@@ -48,13 +48,14 @@ for(const [id,run] of Object.entries(state.runs)){
 }
 const reader=document.querySelector('#reader');
 reader.classList.add('visual-reader');
-reader.innerHTML=`<button id="vn-sound-toggle" aria-label="Звук истории"></button><button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
+reader.innerHTML=`<button id="vn-menu-toggle" aria-label="Меню истории" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 8h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="vn-stage" tabindex="0" aria-label="История. Нажмите для следующей реплики"><div class="vn-background" aria-hidden="true"></div><div class="vn-vignette" aria-hidden="true"></div><div id="vn-character" role="img" hidden></div><section class="vn-dialogue" aria-label="Текст истории"><div class="vn-speaker" hidden><span id="vn-name"></span></div><div class="vn-dialogue-content"><div id="vn-live" aria-live="polite" aria-atomic="true"><p id="story-text"></p></div><div id="choices"></div></div></section></div>`;
 const readingMenu=document.createElement('dialog');readingMenu.id='reading-menu';readingMenu.setAttribute('aria-label','Меню истории');
 readingMenu.innerHTML = `
  <header class="reading-cover"><span id="menu-story"></span><h2 id="menu-episode"></h2></header>
  <div class="reading-controls">
   <h3>Настройки чтения</h3>
-  <label class="reading-option">Звук истории <input type="checkbox" id="reading-sound" role="switch"></label>
+  <label class="reading-option">Звуки истории <input type="checkbox" id="reading-sound" role="switch"></label>
+  <label class="reading-option">Музыка <input type="checkbox" id="reading-music" role="switch"></label>
   <label class="reading-option">Крупный шрифт <input type="checkbox" id="reading-large" role="switch"></label>
   <button id="vn-resume" autofocus>Продолжить чтение</button>
   <div class="reading-links"><button id="vn-home">На главный экран</button><button id="vn-reset">Начать заново</button></div>
@@ -65,34 +66,30 @@ const soundtrack = createReadingAudio(syncReadingSound);
 let audioScene;
 const soundSwitch = $('#reading-sound');
 const largeSwitch = $('#reading-large');
-const sceneSoundButton = $('#vn-sound-toggle');
-function displaySoundSetting(){
- soundSwitch.checked = preferences.sound;
- sceneSoundButton.setAttribute('aria-pressed', String(preferences.sound));
- sceneSoundButton.textContent = preferences.sound ? 'Звук вкл.' : 'Звук выкл.';
-}
-displaySoundSetting();
+const musicSwitch = $('#reading-music');
+preferences.music ??= preferences.sound;
+soundSwitch.checked = preferences.sound;
+musicSwitch.checked = preferences.music;
 largeSwitch.checked = preferences.large;
 reader.classList.toggle('large-type', preferences.large);
 function syncReadingSound(){
- if (!preferences.sound || !reader.open || document.hidden) { soundtrack.stop(); return; }
- soundtrack.play(audioScene);
+ if ((!preferences.music && !preferences.sound) || !reader.open || document.hidden) { soundtrack.stop(); return; }
+ soundtrack.play(audioScene, preferences.music, preferences.sound);
 }
 function unlockReadingSound(){
- if (!preferences.sound || !reader.open) return;
+ if ((!preferences.music && !preferences.sound) || !reader.open) return;
  soundtrack.prepare();
  syncReadingSound();
 }
 document.addEventListener('click',unlockReadingSound);
 document.addEventListener('keyup',unlockReadingSound);
-function setStorySound(enabled){
- preferences.sound = enabled;
- displaySoundSetting();
+soundSwitch.onchange = musicSwitch.onchange = () => {
+ preferences.sound = soundSwitch.checked;
+ preferences.music = musicSwitch.checked;
  save();
- if(enabled) unlockReadingSound(); else syncReadingSound();
-}
-soundSwitch.onchange = () => setStorySound(soundSwitch.checked);
-sceneSoundButton.onclick = () => setStorySound(!preferences.sound);
+ if (preferences.music || preferences.sound) unlockReadingSound();
+ else syncReadingSound();
+};
 largeSwitch.onchange = () => {
  preferences.large = largeSwitch.checked;
  reader.classList.toggle('large-type', preferences.large);

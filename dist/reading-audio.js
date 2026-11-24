@@ -5,6 +5,7 @@ function createReadingAudio(onStateChange) {
   [[50,55,47,45],[66,69,null,73,71,null,69,64]],
   [[45,41,48,43],[64,null,null,67,62,null,59,null]]
  ];
+ let musicChannel, effectsChannel;
  let context, bus, noise, timer, position = 0, scene, heard, story;
  // Keep music and location beds independent of dialogue advances.
  const buffers=new Map(), layers=new Map();
@@ -32,7 +33,7 @@ function createReadingAudio(onStateChange) {
    source.buffer=buffer; source.loop=true;
    gain.gain.value=0;
    gain.gain.setTargetAtTime(volume,context.currentTime,0.15);
-   source.connect(gain).connect(bus);
+   source.connect(gain).connect(slot==='music'?musicChannel:effectsChannel);
    source.onended=()=>{source.disconnect();gain.disconnect()};
    source.start();
   }).catch(()=>{if(layers.get(slot)===entry) layers.delete(slot)});
@@ -49,26 +50,26 @@ function createReadingAudio(onStateChange) {
   }
   if (context.state !== 'running') context.resume().catch(()=>{});
  }
- function voice(source, output, at, duration, level, attack) {
+ function voice(source, output, at, duration, level, attack, channel) {
   const gain = context.createGain();
   gain.gain.setValueAtTime(0.00001,at);
   gain.gain.exponentialRampToValueAtTime(level,at+attack);
   gain.gain.exponentialRampToValueAtTime(0.00001,at+duration);
-  output.connect(gain).connect(bus);
+  output.connect(gain).connect(channel);
   source.onended=()=>{source.disconnect();output.disconnect();gain.disconnect()};
   source.start(at); source.stop(at+duration);
  }
- function note(pitch, at, duration, level, type='sine') {
+ function note(pitch, at, duration, level, type='sine', channel=musicChannel) {
   const osc=context.createOscillator();
   osc.type=type;
   osc.frequency.value=440*Math.pow(2,(pitch-69)/12);
-  voice(osc,osc,at,duration,level,type==='triangle'?0.025:0.12);
+  voice(osc,osc,at,duration,level,type==='triangle'?0.025:0.12,channel);
  }
  function rustle(hz, at, duration, level, attack) {
   const source=context.createBufferSource(), filter=context.createBiquadFilter();
   source.buffer=noise; source.loop=true;
   filter.type='bandpass'; filter.frequency.value=hz; filter.Q.value=0.65;
-  source.connect(filter); voice(source,filter,at,duration,level,attack);
+  source.connect(filter); voice(source,filter,at,duration,level,attack,effectsChannel);
  }
  function tick() {
   const [roots,melody]=scores[scene.story], now=context.currentTime;
@@ -95,14 +96,20 @@ function createReadingAudio(onStateChange) {
   old.gain.setTargetAtTime(0,context.currentTime,0.025);
   setTimeout(()=>old.disconnect(),160);
  }
- function play(next) {
+ function play(next,musicEnabled,effectsEnabled) {
   scene=next;
   if (!context || !scene || context.state!=='running') return;
   if (!bus || story!==scene.story) {
    stop(); story=scene.story; position=0;
    bus=context.createGain(); bus.connect(context.destination);
+   musicChannel=context.createGain(); musicChannel.connect(bus);
+   effectsChannel=context.createGain(); effectsChannel.connect(bus);
+   musicChannel.gain.value=Number(musicEnabled);
+   effectsChannel.gain.value=Number(effectsEnabled);
    if(story!==1) { tick(); timer=setInterval(tick,1150); }
   }
+  musicChannel.gain.setTargetAtTime(Number(musicEnabled),context.currentTime,0.012);
+  effectsChannel.gain.setTargetAtTime(Number(effectsEnabled),context.currentTime,0.012);
   if(story===1) {
    layer('music','riviera',0.045);
    const market=scene.bg==='summer-04' || scene.bg==='summer-07';
@@ -116,7 +123,7 @@ function createReadingAudio(onStateChange) {
    for(let i=0;i<66;i++) rustle(900+Math.random()*1700,now+i*0.034+Math.random()*0.03,0.085,(1-i/80)*0.17,0.004);
   }
   if (scene.text.includes('звонит колокол')) {
-   note(76,now,2.6,0.085); note(88,now,1.55,0.03);
+   note(76,now,2.6,0.085,'sine',effectsChannel); note(88,now,1.55,0.03,'sine',effectsChannel);
   }
  }
  return {prepare,play,stop};
