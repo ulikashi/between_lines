@@ -27,3 +27,22 @@ render();
 
 finale.addEventListener('cancel',event=>{event.preventDefault();finale.close();closeReader()});
 reader.addEventListener('close',()=>{if(finale.open)finale.close()});
+
+window.addEventListener('DOMContentLoaded', () => {
+ const app = window.Telegram?.WebApp;
+ if (!app || app.platform === 'unknown') return;
+ app.expand();
+ app.setHeaderColor?.('#291519');
+ document.documentElement.classList.add('telegram-mini');
+ const currentDialog = () => [...document.querySelectorAll('dialog[open]')].pop();
+ const syncBack = () => currentDialog() ? app.BackButton.show() : app.BackButton.hide();
+ app.BackButton.onClick(() => {
+   if (finale.open) { finale.close(); closeReader(); }
+   else if (readingMenu.open) readingMenu.close();
+   else if (reader.open) openReadingMenu();
+   else currentDialog()?.close();
+ });
+ new MutationObserver(syncBack).observe(document.body, {subtree:true, attributes:true, attributeFilter:['open']});
+ syncBack();
+ app.ready();
+});
