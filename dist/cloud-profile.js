@@ -9,6 +9,14 @@ window.addEventListener('DOMContentLoaded',async()=>{
  function status(text){label.textContent=text}
  const button=document.querySelector('#profile');
  button.style.display='block';
+ const photoUrl = tg.initDataUnsafe.user?.photo_url;
+ if (typeof photoUrl === 'string' && photoUrl.startsWith('https://')) {
+  const avatar = new Image();
+  avatar.alt = '';
+  avatar.referrerPolicy = 'no-referrer';
+  avatar.onload = () => button.replaceChildren(avatar);
+  avatar.src = photoUrl;
+ }
  button.onclick=()=>{
   info('<h2></h2><p></p>');
   const box=document.querySelector('#info-content');

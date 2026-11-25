@@ -48,3 +48,17 @@ body nav.library-tabs{position:fixed;inset:auto 0 0;z-index:20;display:flex;alig
 
 .telegram-mini body{min-height:var(--tg-viewport-stable-height,100dvh)}
 .telegram-mini .library-tabs{padding-bottom:calc(4px + max(env(safe-area-inset-bottom),var(--tg-safe-area-inset-bottom,0px)))}
+
+/* Equal side tracks keep the wordmark centered regardless of the avatar. */
+header:has(#profile){display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+header .logo{grid-column:2;justify-self:center;margin:0}
+header #profile{grid-column:3;justify-self:end;grid-row:1;padding:0;overflow:hidden;background:radial-gradient(circle at 50% 36%,#dcc298 0 16%,transparent 17%),radial-gradient(ellipse at 50% 98%,#dcc298 0 34%,transparent 35%),#421f26}
+#profile img{display:block;width:100%;height:100%;object-fit:cover}
+html,body,dialog,.vn-dialogue-content{scrollbar-width:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,dialog::-webkit-scrollbar,.vn-dialogue-content::-webkit-scrollbar{display:none}
+@media(max-width:700px){
+ .library .section-heading{text-align:center;justify-content:center}
+ .library .filter-row{align-items:center}
+ .library .filters{justify-content:center}
+ body nav.library-tabs{padding-inline:10px;left:0;right:0;width:auto}
+}
