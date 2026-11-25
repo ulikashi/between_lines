@@ -1,5 +1,5 @@
-const CACHE='between-lines-80239c94577b369e';
-const FILES=["./", "./index.html", "./build/site-016785d786165d69.js", "./build/site-c668eae0edab5d75.css", "./assets/city.png", "./assets/moon.png", "./assets/summer.png", "./assets/salon.png", "./assets/audio/riviera.wav", "./assets/audio/mercato.wav", "./assets/audio/shore.wav", "./assets/story-props/contract.webp", "./assets/story-props/manuscript.webp", "./assets/story-props/market.webp", "./assets/story-props/notebook.webp", "./assets/story-props/pass.webp", "./assets/story-props/portrait.webp", "./assets/story-props/poster.webp", "./assets/story-props/ticket.webp", "./assets/story-props/vendor.webp", "./assets/full-length/bianchi.webp", "./assets/full-length/coral.webp", "./assets/full-length/couture.webp", "./assets/full-length/friend.webp", "./assets/full-length/ivory.webp", "./assets/full-length/kirill.webp", "./assets/full-length/linen.webp", "./assets/full-length/marta.webp", "./assets/full-length/producer.webp", "./assets/full-length/rose.webp", "./assets/full-length/sasha.webp", "./assets/full-length/silk.webp"];
+const CACHE='between-lines-a240b2d40561e4aa';
+const FILES=["./", "./index.html", "./build/site-2025096437679d87.js", "./build/site-c668eae0edab5d75.css", "./assets/city.png", "./assets/moon.png", "./assets/summer.png", "./assets/salon.png", "./assets/audio/riviera.wav", "./assets/audio/mercato.wav", "./assets/audio/shore.wav", "./assets/story-props/contract.webp", "./assets/story-props/manuscript.webp", "./assets/story-props/market.webp", "./assets/story-props/notebook.webp", "./assets/story-props/pass.webp", "./assets/story-props/portrait.webp", "./assets/story-props/poster.webp", "./assets/story-props/ticket.webp", "./assets/story-props/vendor.webp", "./assets/full-length/bianchi.webp", "./assets/full-length/coral.webp", "./assets/full-length/couture.webp", "./assets/full-length/friend.webp", "./assets/full-length/ivory.webp", "./assets/full-length/kirill.webp", "./assets/full-length/linen.webp", "./assets/full-length/marta.webp", "./assets/full-length/producer.webp", "./assets/full-length/rose.webp", "./assets/full-length/sasha.webp", "./assets/full-length/silk.webp"];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  // Do not populate a new release from the browser's old HTTP cache.
@@ -13,6 +13,7 @@ self.addEventListener('activate',event=>event.waitUntil((async()=>{
  await self.clients.claim();
 })()));
 self.addEventListener('fetch',event=>{
+ if(new URL(event.request.url).pathname.startsWith('/api/'))return;
  if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
  event.respondWith((async()=>{
   const cache=await caches.open(CACHE);

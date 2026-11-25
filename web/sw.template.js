@@ -13,6 +13,7 @@ self.addEventListener('activate',event=>event.waitUntil((async()=>{
  await self.clients.claim();
 })()));
 self.addEventListener('fetch',event=>{
+ if(new URL(event.request.url).pathname.startsWith('/api/'))return;
  if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
  event.respondWith((async()=>{
   const cache=await caches.open(CACHE);
